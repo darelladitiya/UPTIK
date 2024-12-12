@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software</title>
+    <title>Ruangan</title>
     <style>
         .border-table {
             font-family: Arial, Helvetica, sans-serif;
@@ -23,47 +23,58 @@
         .border-table td {
             border: 1 solid #000;
         }
+
+        .tengah {
+            text-align: center;
+        }
     </style>
 
 </head>
 
 <body>
-    <table class="border-table">
-        <thead class="thead-dark">
-            <tr class="text-center">
-                <th scope="col">No</th>
-                <th scope="col">Nama Ruangan</th>
-                <th scope="col">Keterangan</th>
-                <th scope="col">Penanggung Jawab</th>
-                <th scope="col">Lokasi</th>
-            </tr>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-14 col-md-12 col-sm-12 tab">
+                <h3 class="tengah">Data Ruangan Lab UPA-TIK</h3>
+                <table class="border-table">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th scope="col">No</th>
+                            <th scope="col">Nama Ruangan</th>
+                            <th scope="col">Keterangan</th>
+                            <th scope="col">Penanggung Jawab</th>
+                            <th scope="col">Lokasi</th>
+                        </tr>
 
-        <tbody>
-            <?php
-            // Hitung nilai $i
-            $i = 1;
-            ?>
-            <?php foreach ($ruangan as $fasilitas): ?>
-                <tr class="text-center">
-                    <td scope="row">
-                        <?= $i++; ?>
-                    </td>
-                    <td>
-                        <?= $fasilitas['nama_ruangan']; ?>
-                    </td>
-                    <td>
-                        <?= $fasilitas['keterangan']; ?>
-                    </td>
-                    <td>
-                        <?= $fasilitas['nama']; ?>
-                    </td>
-                    <td>
-                        <?= $fasilitas['lokasi']; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                    <tbody>
+                        <?php
+                        // Hitung nilai $i
+                        $i = 1;
+                        ?>
+                        <?php foreach ($ruangan as $fasilitas) : ?>
+                            <tr class="text-center">
+                                <td scope="row">
+                                    <?= $i++; ?>
+                                </td>
+                                <td>
+                                    <?= $fasilitas['nama_ruangan']; ?>
+                                </td>
+                                <td>
+                                    <?= $fasilitas['keterangan']; ?>
+                                </td>
+                                <td>
+                                    <?= $fasilitas['nama']; ?>
+                                </td>
+                                <td>
+                                    <?= $fasilitas['lokasi']; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

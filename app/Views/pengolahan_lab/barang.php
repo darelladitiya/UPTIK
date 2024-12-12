@@ -6,7 +6,7 @@
 
 
 <body>
-    <h1 class="my-3">Data barang</h1>
+    <h1 class="my-3 text-center">Data Barang</h1>
     <div class="container mb-3">
         <div class="col">
             <form action="<?= route_to('admin.barang') ?>" method="post">
@@ -48,7 +48,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($barang as $fasilitas): ?>
+            <?php foreach ($barang as $fasilitas) : ?>
                 <tr class="text-center">
                     <td scope="row-1">
                         <?= $i++; ?>
@@ -75,8 +75,7 @@
                         <?= $fasilitas['nama_ruangan']; ?>
                     </td>
                     <td>
-                        <a href="/admin/hapus_data_barang/<?= $fasilitas['id_aset']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
+                        <a href="/admin/hapus_data_barang/<?= $fasilitas['id_aset']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
 
                         <a href="/admin/edit_data_barang/<?= $fasilitas['id_aset']; ?>" class="btn btn-success">Edit</a>
                     </td>
@@ -88,8 +87,6 @@
     <div class="row my-3">
         <div class="col">
             <a href="<?= route_to('admin.add.barang') ?>" class="btn btn-primary">Tambah Data Barang</a>
-        </div>
-        <div class="col">
             <a href="<?= route_to('barang.export.pdf') ?>" target="_blank" class="btn btn-warning">Export PDF</a>
         </div>
     </div>
@@ -104,7 +101,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

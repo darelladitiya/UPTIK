@@ -8,7 +8,7 @@
             <?php $validation = \Config\Services::validation(); ?>
             <form action="/admin/save_pegawai" method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
-                <?php if (!empty(session()->getFlashdata('success'))): ?>
+                <?php if (!empty(session()->getFlashdata('success'))) : ?>
                     <div class="alert alert-success">
                         <?= session()->getFlashdata('succes'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty(session()->getFlashdata('fail'))): ?>
+                <?php if (!empty(session()->getFlashdata('fail'))) : ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('fail'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -31,7 +31,7 @@
                         <input type="text" class="form-control" id="nama" name="nama" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('nama')): ?>
+                <?php if ($validation->getError('nama')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nama'); ?>
                     </div>
@@ -42,7 +42,7 @@
                         <input type="text" class="form-control" id="nip" name="nip" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('nip')): ?>
+                <?php if ($validation->getError('nip')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nip'); ?>
                     </div>

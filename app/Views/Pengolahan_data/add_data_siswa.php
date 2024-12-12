@@ -8,7 +8,7 @@
             <?php $validation = \Config\Services::validation(); ?>
             <form action="/admin/save_data_siswa" method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
-                <?php if (!empty(session()->getFlashdata('success'))): ?>
+                <?php if (!empty(session()->getFlashdata('success'))) : ?>
                     <div class="alert alert-success">
                         <?= session()->getFlashdata('succes'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty(session()->getFlashdata('fail'))): ?>
+                <?php if (!empty(session()->getFlashdata('fail'))) : ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('fail'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -31,7 +31,7 @@
                         <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('nama_lengkap')): ?>
+                <?php if ($validation->getError('nama_lengkap')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nama_lengkap'); ?>
                     </div>
@@ -42,7 +42,7 @@
                         <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('jenis_kelamin')): ?>
+                <?php if ($validation->getError('jenis_kelamin')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('jenis_kelamin'); ?>
                     </div>
@@ -53,7 +53,7 @@
                         <input type="text" class="form-control" id="juruusan_pkl" name="juruusan_pkl" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('juruusan_pkl')): ?>
+                <?php if ($validation->getError('juruusan_pkl')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('juruusan_pkl'); ?>
                     </div>
@@ -64,7 +64,7 @@
                         <input type="text" class="form-control" id="asal_sekolah" name="asal_sekolah" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('asal_sekolah')): ?>
+                <?php if ($validation->getError('asal_sekolah')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('asal_sekolah'); ?>
                     </div>

@@ -83,7 +83,8 @@
                         <?= $validation->getError('ruangan'); ?>
                     </div>
                 <?php endif; ?>
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="submit" class="btn btn-primary"
+                onclick="return confirm('Apakah anda yakin ingin mengedit data ini?');">Simpan Data</button>
             </form>
         </div>
     </div>

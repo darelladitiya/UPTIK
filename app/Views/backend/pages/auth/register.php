@@ -27,9 +27,21 @@
         <?php endif; ?>
         <div class="form-wrap max-width-600 mx-auto">
             <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="name" id="name">
+                </div>
+            </div>
+            <?php if ($validation->getError('name')): ?>
+                <div class="d-block text-danger" style="margin-top:-25px;margin-bottom:15px;">
+                    <?= $validation->getError('name'); ?>
+                </div>
+            <?php endif; ?>
+        <div class="form-wrap max-width-600 mx-auto">
+            <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email Address*</label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" name="email" id="username">
+                    <input type="email" class="form-control" name="email" id="email">
                 </div>
             </div>
             <?php if ($validation->getError('email')): ?>

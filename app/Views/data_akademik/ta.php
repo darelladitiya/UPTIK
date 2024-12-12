@@ -30,7 +30,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($ta as $row): ?>
+            <?php foreach ($ta as $row) : ?>
                 <tr class="text-center">
                     <td scope="row">
                         <?= $i++; ?>
@@ -46,12 +46,10 @@
                         <?= $row['status']; ?>
                     </td>
                     <td>
-                        <?php if ($row['status'] == 'TIDAK'): ?>
-                            <a href="<?= route_to('admin.toggleStatus', $row['id_thn']); ?>"
-                                class="btn btn-success">Aktifkan</a>
-                        <?php else: ?>
-                            <a href="<?= route_to('admin.toggleStatus', $row['id_thn']); ?>"
-                                class="btn btn-danger">Nonaktifkan</a>
+                        <?php if ($row['status'] == 'TIDAK') : ?>
+                            <a href="<?= route_to('admin.toggleStatus', $row['id_thn']); ?>" class="btn btn-success">Aktifkan</a>
+                        <?php else : ?>
+                            <a href="<?= route_to('admin.toggleStatus', $row['id_thn']); ?>" class="btn btn-danger">Nonaktifkan</a>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -78,7 +76,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

@@ -5,7 +5,7 @@
 
 <div class="swal" data-swal="<?= session('success'); ?>"></div>
 
-<h1 class="my-3">Jadwal Reguler</h1>
+<h1 class="my-3 text-center">Jadwal Reguler</h1>
 <div class="container">
     <div class="col">
         <form action="<?= route_to('admin.jadwal') ?>" method="post">
@@ -51,7 +51,7 @@
         // Hitung nilai $i
         $i = 1 + (10 * ($page - 1));
         ?>
-        <?php foreach ($jadwal as $jadwal): ?>
+        <?php foreach ($jadwal as $jadwal) : ?>
             <tr class="text-center">
                 <td scope="row">
                     <?= $i++; ?>
@@ -88,8 +88,7 @@
                     <?= $jadwal['thn_akhir']; ?>
                 </td>
                 <td>
-                    <a href="/admin/hapus_data_jadwal/<?= $jadwal['id_jadwal']; ?>"
-                        onclick="return confirm('apakah anda yakin');" class="btn btn-danger my-2">Delete</a>
+                    <a href="/admin/hapus_data_jadwal/<?= $jadwal['id_jadwal']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger my-2">Delete</a>
                     <a href="/admin/jadwal-edit/<?= $jadwal['id_jadwal']; ?>" class="btn btn-success">Edit</a>
                 </td>
             </tr>
@@ -99,13 +98,12 @@
 </table>
 <div class="row my-3">
     <div class="col">
-        <a href="<?= route_to('jadwal.export.pdf') ?>" target="_blank" class="btn btn-warning">Export PDF</a>
-        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#success-modal"> Export excel
+        <a href="<?= route_to('jadwal.export.pdf', 'Reguler') ?>" target="_blank" class="btn btn-warning">Export PDF</a>
+        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#success-modal"> Export Excel
         </a>
     </div>
 </div>
-<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true" style="display: none;">
+<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center font-18 mx-6">
@@ -116,7 +114,7 @@
                             Filter Sesuai Jam
                         </a>
                         <ul class="submenu">
-                            <?php if (isset($jadwal['jenis'])): ?>
+                            <?php if (isset($jadwal['jenis'])) : ?>
                                 <li><a href="<?= route_to('export.regulerJam.excel', $jadwal['jenis'], $jam[0]['jam']); ?>">07.00-
                                         07.50</a></li>
                                 <li><a href="<?= route_to('export.regulerJam.excel', $jadwal['jenis'], $jam[1]['jam']); ?>">
@@ -137,10 +135,9 @@
                                         14.30 - 15.20</a></li>
                                 <li><a href="<?= route_to('export.regulerJam.excel', $jadwal['jenis'], $jam[9]['jam']); ?>">
                                         15.20 - 16.40</a></li>
-                                <li><a
-                                        href="<?= route_to('export.regulerJam.excel', $jadwal['jenis'], $jam[10]['jam']); ?>">
+                                <li><a href="<?= route_to('export.regulerJam.excel', $jadwal['jenis'], $jam[10]['jam']); ?>">
                                         16.40 - 17.30</a></li>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <li>
                                     <p>Tidak ada data jadwal reguler.</p>
                                 </li>
@@ -153,22 +150,18 @@
                             <span class="mtext">Filter Hari</span>
                         </a>
                         <ul class="submenu">
-                            <?php if (isset($jadwal['jenis'])): ?>
-                                <li><a
-                                        href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[0]); ?>">Senin</a>
+                            <?php if (isset($jadwal['jenis'])) : ?>
+                                <li><a href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[0]); ?>">Senin</a>
                                 </li>
                                 <li><a href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[1]); ?>">Selasa
                                     </a></li>
-                                <li><a
-                                        href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[2]); ?>">Rabu</a>
+                                <li><a href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[2]); ?>">Rabu</a>
                                 </li>
-                                <li><a
-                                        href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[3]); ?>">Kamis</a>
+                                <li><a href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[3]); ?>">Kamis</a>
                                 </li>
-                                <li><a
-                                        href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[4]); ?>">Jumat</a>
+                                <li><a href="<?= route_to('export.regulerFilter.excel', $jadwal['jenis'], $hari[4]); ?>">Jumat</a>
                                 </li>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <li>
                                     <p>Tidak ada data jadwal reguler.</p>
                                 </li>
@@ -178,6 +171,8 @@
                 </ul>
             </div>
             <div class="modal-footer justify-content-center">
+                <a href="<?= route_to('export.reguler.excel', 'Reguler') ?>" class="btn btn-primary">Export Semua</a>
+
                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                     Cancel
                 </button>
@@ -187,7 +182,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <?php if ($pager): ?>
+        <?php if ($pager) : ?>
             <?= $pager->links('jadwal', 'my_pagination'); ?>
         <?php endif; ?>
     </div>
@@ -199,7 +194,6 @@
 <?= $this->endSection(); ?>
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

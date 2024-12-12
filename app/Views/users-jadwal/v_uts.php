@@ -9,8 +9,8 @@
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
                     <p>Lab UPA-TIK</p>
-                    <h1>Jadwal UTS Tahun <br>
-                        <?= esc($thn_awal . '-' . $thn_akhir); ?>
+                    <h1>Jadwal UTS Tahun Ajaran<br>
+                        <?= esc($thn_awal . '-' . $thn_akhir); ?> Semester <?= $semester; ?>
                     </h1>
                 </div>
             </div>
@@ -82,6 +82,10 @@
 
                 </tbody>
             </table>
+            <a href="<?= route_to('export.vjadwal.pdf', $jenis = "UTS"); ?>" target="_blank" class="btn btn-warning mb-2">Export
+				PDF</a>
+			<a href="<?= route_to('export.jadwal-reguler.excel', $jenis = "UTS"); ?>" target="_blank" class="btn btn-success mb-2">Export
+				Excel</a>
         </div>
     </div>
 </div>

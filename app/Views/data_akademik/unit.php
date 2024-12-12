@@ -31,7 +31,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($unit as $ta): ?>
+            <?php foreach ($unit as $ta) : ?>
                 <tr class="text-center">
                     <td scope="row-1">
                         <?= $i++; ?>
@@ -43,9 +43,8 @@
                         <?= $ta['nama_unit']; ?>
                     </td>
                     <td>
+                        <a href="/admin/hapus_data_unit/<?= $ta['id_unit']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         <a href="/admin/edit_data_unit/<?= $ta['id_unit']; ?>" class="btn btn-success">Edit</a>
-                        <a href="/admin/hapus_data_unit/<?= $ta['id_unit']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
                     </td>
 
 
@@ -57,7 +56,7 @@
     <div class="row my-3">
         <div class="col">
             <a href="<?= route_to('admin.add.unit') ?>" class="btn btn-primary">Tambah Data Unit</a>
-            <a href="<?= route_to('unit.export.pdf') ?>" class="btn btn-warning">Export</a>
+            <a href="<?= route_to('unit.export.pdf') ?>" class="btn btn-warning">Export PDF</a>
         </div>
     </div>
 
@@ -72,7 +71,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

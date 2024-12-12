@@ -8,6 +8,7 @@ use App\Libraries\CiAuth;
 use App\Libraries\Hash;
 use App\Models\Admin;
 use App\Models\userModel;
+use App\Models\prodiModel;
 use App\Models\PasswordResetToken;
 use Carbon\Carbon;
 
@@ -43,16 +44,16 @@ class AuthController extends BaseController
                 'login_id' => [
                     'rules' => 'required|valid_email|is_not_unique[admin.email]',
                     'errors' => [
-                        'required' => 'Email is required',
-                        'valid_email' => 'Please, check the email field, It does not appears to be valid. ',
-                        'is_not_unique' => 'Email is not Exist in our system'
+                        'required' => 'Email diperlukan',
+                        'valid_email' => 'Masukkan email yang valid! ',
+                        'is_not_unique' => 'Email tidak terdaftar dalam sistem'
                     ]
                 ],
                 'password' => [
-                    'rules' => 'required|min_length[5]|max_length[45]',
+                    'rules' => 'required|min_length[8]|max_length[45]',
                     'errors' => [
-                        'required' => 'Password is required',
-                        'min_length' => 'Password setidaknya harus 5 karakter',
+                        'required' => 'Password diperlukan',
+                        'min_length' => 'Password setidaknya harus 8 karakter',
                         'max_length' => 'Password tidak boleh lebih dari 45 karakter'
                     ]
                 ]
@@ -62,15 +63,15 @@ class AuthController extends BaseController
                 'login_id' => [
                     'rules' => 'required|is_not_unique[admin.username]',
                     'errors' => [
-                        'required' => 'Username is required',
-                        'is_not_unique' => 'Username is not Exist in our system'
+                        'required' => 'Username diperlukan',
+                        'is_not_unique' => 'Username tidak terdaftar di dalam sistem'
                     ]
                 ],
                 'password' => [
-                    'rules' => 'required|min_length[5]|max_length[45]',
+                    'rules' => 'required|min_length[8]|max_length[45]',
                     'errors' => [
-                        'required' => 'Password is required',
-                        'min_length' => 'Password setidaknya harus 5 karakter',
+                        'required' => 'Password diperlukan',
+                        'min_length' => 'Password setidaknya harus 8 karakter',
                         'max_length' => 'Password tidak boleh lebih dari 45 karakter'
                     ]
                 ]
@@ -82,7 +83,6 @@ class AuthController extends BaseController
                 'pageTitle' => 'Login',
                 'validation' => $this->validator
             ]);
-
         } else {
             $admin = new Admin();
             $adminInfo = $admin->where($fieldtype, $this->request->getVar('login_id'))->first();
@@ -97,7 +97,7 @@ class AuthController extends BaseController
                 CiAuth::setCiAuth($adminInfo); // Baris Penting
                 $username = $adminInfo['username'];
                 session()->set('username', $username);
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.home')->with('success', "Selamat Datang {$adminInfo ['username']}");
             }
         }
     }
@@ -110,16 +110,16 @@ class AuthController extends BaseController
                 'login_id' => [
                     'rules' => 'required|valid_email|is_not_unique[user.email]',
                     'errors' => [
-                        'required' => 'Email is required',
-                        'valid_email' => 'Please, check the email field, It does not appears to be valid. ',
-                        'is_not_unique' => 'Email is not Exist in our system'
+                        'required' => 'Email diperlukan',
+                        'valid_email' => 'Masukkan email yang valid ',
+                        'is_not_unique' => 'Email tidak terdaftar di dalam sistem'
                     ]
                 ],
                 'password' => [
-                    'rules' => 'required|min_length[4]|max_length[45]',
+                    'rules' => 'required|min_length[8]|max_length[45]',
                     'errors' => [
-                        'required' => 'Password is required',
-                        'min_length' => 'Password setidaknya harus 5 karakter',
+                        'required' => 'Password diperlukan',
+                        'min_length' => 'Password setidaknya harus 8 karakter',
                         'max_length' => 'Password tidak boleh lebih dari 45 karakter'
                     ]
                 ]
@@ -129,15 +129,15 @@ class AuthController extends BaseController
                 'login_id' => [
                     'rules' => 'required|is_not_unique[user.username]',
                     'errors' => [
-                        'required' => 'Username is required',
-                        'is_not_unique' => 'Username is not Exist in our system'
+                        'required' => 'Username diperlukan',
+                        'is_not_unique' => 'Username tidak terdaftar di dalam sistem '
                     ]
                 ],
                 'password' => [
-                    'rules' => 'required|min_length[4]|max_length[45]',
+                    'rules' => 'required|min_length[8]|max_length[45]',
                     'errors' => [
-                        'required' => 'Password is required',
-                        'min_length' => 'Password setidaknya harus 5 karakter',
+                        'required' => 'Password diperlukan',
+                        'min_length' => 'Password setidaknya harus 8 karakter',
                         'max_length' => 'Password tidak boleh lebih dari 45 karakter'
                     ]
                 ]
@@ -149,12 +149,10 @@ class AuthController extends BaseController
                 'pageTitle' => 'Login',
                 'validation' => $this->validator
             ]);
-
         }
 
         $user = new userModel();
         $adminInfo = $user->where($fieldtype, $this->request->getVar('login_id'))->first();
-        $idProdi = $adminInfo ? $adminInfo['id_prodi'] : null;
 
         if ($adminInfo) {
             // Periksa apakah akun aktif
@@ -170,9 +168,16 @@ class AuthController extends BaseController
 
                     // Simpan ID Prodi ke dalam sesi
                     $idProdi = $adminInfo['id_prodi'];
+                    $prodiModel = new ProdiModel();
+                    $prodiInfo = $prodiModel->find($idProdi);
+                    $namaProdi = $prodiInfo['nama_prodi'];
+                    $program = $prodiInfo['program']; // Misalnya: S1, S2, D3, dll.
                     session()->set('idProdi', $idProdi);
+                    session()->set('namaProdi', $namaProdi);
+                    session()->set('program', $program);
 
-                    return redirect()->route('user.ajukan');
+                    // Redirect ke halaman yang sesuai
+                    return redirect()->route('user.ajukan')->with('success', "Selamat datang Ketua Prodi $namaProdi $program. Anda login sebagai {$adminInfo['username']}");
                 } else {
                     // Jika password tidak cocok, tampilkan pesan kesalahan
                     return redirect()->route('user.login.form')->with('fail', 'Password Salah')->withInput();
@@ -211,10 +216,11 @@ class AuthController extends BaseController
 
         $isValid = $this->validate([
             'email' => [
-                'rules' => 'required|valid_email',
+                'rules' => 'required|valid_email|is_not_unique[admin.email]',
                 'errors' => [
-                    'required' => 'Email is required',
-                    'valid_email' => 'Please check email field.'
+                    'required' => 'Email perlu diisi',
+                    'valid_email' => 'Masukkan email yang valid',
+                    'is_not_unique' => 'Email tidak terdaftar di dalam sistem'
                 ],
             ]
         ]);
@@ -270,23 +276,22 @@ class AuthController extends BaseController
 
             // Send Email
             if (sendEmail($mailConfig)) {
-                return redirect()->route('admin.forgot.password')->with('success', 'Kita sudah mengirimkan password ke email mu');
+                return redirect()->route('admin.forgot.password')->with('success', 'Kita sudah mengirimkan password ke emailmu');
             } else {
                 return redirect()->route('admin.forgot.password')->with('fail', 'Ada Sesuatu yang salah');
             }
-
         }
-
     }
     public function sendPasswordResetLinkUser()
     {
 
         $isValid = $this->validate([
             'email' => [
-                'rules' => 'required|valid_email',
+                'rules' => 'required|valid_email|is_not_unique[user.email]',
                 'errors' => [
-                    'required' => 'Email is required',
-                    'valid_email' => 'Please check email field.'
+                    'required' => 'Email perlu diisi',
+                    'valid_email' => 'Masukkan email yang valid',
+                    'is_not_unique' => 'Email tidak tersedia di dalam sistem'
                 ],
             ]
         ]);
@@ -342,13 +347,11 @@ class AuthController extends BaseController
 
             // Send Email
             if (sendEmail($mailConfig)) {
-                return redirect()->route('user.forgot.password')->with('success', 'Kita sudah mengirimkan password ke email mu');
+                return redirect()->route('user.forgot.password')->with('success', 'Kita sudah mengirimkan password ke emailmu');
             } else {
                 return redirect()->route('user.forgot.password')->with('fail', 'Ada Sesuatu yang salah');
             }
-
         }
-
     }
 
 
@@ -534,12 +537,11 @@ class AuthController extends BaseController
                     $passwordResetPassword->where('email', $user_info->email)->delete();
 
                     //Redirect dan tampilkan pesan pada laman login
-                    return redirect()->route('user.login.form')->with('success', 'Berhasil, Password anda telah berhasil di ubah, gunakan password baru untuk login ke system');
+                    return redirect()->route('user.login.form')->with('success', 'Berhasil, Password anda telah berhasil diubah, gunakan password baru untuk login ke sistem');
                 } else {
                     return redirect()->back()->with('fail', 'Ada Sesuatu yang salah!');
                 }
             }
         }
     }
-
 }

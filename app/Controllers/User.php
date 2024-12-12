@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\userModel;
 use App\Models\prodiModel;
 use App\Models\kritikModel;
+use App\Libraries\Hash;
 
 class User extends BaseController
 {
@@ -16,6 +17,7 @@ class User extends BaseController
             'user' => $user,
             'pageTitle' => "User",
             'pager' => $usrModel->pager,
+            'status' => $usrModel->getStatus()
         ];
 
 
@@ -29,7 +31,7 @@ class User extends BaseController
         $prodiModel = new prodiModel();
 
         $data = [
-            'pageTitle' => 'user',
+            'pageTitle' => 'Tambah Data User',
             'user' => $userModel->find('id_prodi'),
             'prodi' => $prodiModel->findAll()
 
@@ -42,26 +44,97 @@ class User extends BaseController
     {
         $userModel = new userModel();
         $prodiModel = new prodiModel();
-        // Ambil data dari form
-        $data = [
-            'nama_user' => $this->request->getPost('nama_user'),
-            'username' => $this->request->getPost('username'),
-            'password' => $this->request->getPost('password'),
-            'email' => $this->request->getPost('email'),
-            'status' => $this->request->getPost('status'),
-            'no_telp' => $this->request->getPost('no_telp'),
-            'id_prodi' => $this->request->getPost('id_prodi'),
-        ];
 
-        // Validasi data jika diperlukan
-        // Misalnya, Anda dapat menggunakan fitur validasi CodeIgniter
 
-        // Simpan data ke dalam database
+        $rules = $this->validate([
+            'nama_user' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'nama/kode lengkap diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'username' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'username diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|min_length[8]',
+                'errors' => [
+                    'required' => 'password diperlukan',
+                    'min_length' => 'password minimal 8 karakter',
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'email diperlukan',
+                    'valid_email' => 'masukkan email yang valid!',
+                ]
+            ],
+            'status' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'status harus dipilih'
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required|max_length[18]',
+                'errors' => [
+                    'required' => 'no_telp diperlukan, jika tidak ada masukkan simbol " - " ',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ],
+            'id_prodi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'prodi harus dipilih'
+                ]
+            ],
+        ]);
 
-        $userModel->insert($data);
+        if (!$rules) {
+            $userModel = new userModel();
+            $prodiModel = new prodiModel();
 
-        // Redirect atau tampilkan pesan berhasil, tergantung pada kebutuhan Anda
-        return redirect()->to(site_url('admin/users'))->with('success', 'Data berhasil disimpan');
+            // Ambil data dari form
+            $data = [
+                'pageTitle' => 'Tambah Data User',
+                'validation' => $this->validator,
+                'user' => $userModel->find('id_prodi'),
+                'prodi' => $prodiModel->findAll(),
+                'nama_user' => $this->request->getPost('nama_user'),
+                'username' => $this->request->getPost('username'),
+                'password' => Hash::make($this->request->getVar('password')),
+                'email' => $this->request->getPost('email'),
+                'status' => $this->request->getPost('status'),
+                'no_telp' => $this->request->getPost('no_telp'),
+                'id_prodi' => $this->request->getPost('id_prodi'),
+            ];
+
+            return view('users/add_data_user', $data);
+        } else {
+
+            $userModel = new userModel();
+            $prodiModel = new prodiModel();
+            $data = [
+                'user' => $userModel->find('id_prodi'),
+                'prodi' => $prodiModel->findAll(),
+                'nama_user' => $this->request->getPost('nama_user'),
+                'username' => $this->request->getPost('username'),
+                'password' => Hash::make($this->request->getVar('password')),
+                'email' => $this->request->getPost('email'),
+                'status' => $this->request->getPost('status'),
+                'no_telp' => $this->request->getPost('no_telp'),
+                'id_prodi' => $this->request->getPost('id_prodi'),
+            ];
+
+            $userModel->save($data);
+            return redirect()->to('admin/users')->with('success', 'Data berhasil disimpan.');
+        }
     }
 
     public function edit_user($id_user)
@@ -78,7 +151,8 @@ class User extends BaseController
         $data = [
             'pageTitle' => 'Edit Data User',
             'user' => $user,
-            'prodi' => $prodiModel->findAll()
+            'prodi' => $prodiModel->findAll(),
+            'status' => $userModel->getStatus()
         ];
 
         return view('users/edit_data_user', $data);
@@ -97,19 +171,82 @@ class User extends BaseController
 
         // Ambil data dari form
         $postData = $this->request->getPost();
+        $validation = \Config\Services::validation();
 
         // Validasi data jika diperlukan
+        $rules = $this->validate([
+            'nama_user' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'nama/kode lengkap diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'username' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'username diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'password' => [
+                'rules' => 'required|min_length[8]',
+                'errors' => [
+                    'required' => 'password diperlukan',
+                    'min_length' => 'password minimal 8 karakter',
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'email diperlukan',
+                    'valid_email' => 'masukkan email yang valid!',
+                ]
+            ],
+            'no_telp' => [
+                'rules' => 'required|max_length[18]',
+                'errors' => [
+                    'required' => 'no_telp diperlukan, jika tidak ada masukkan simbol " - " ',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ],
 
-        // Pastikan id_jurusan yang dikirim valid
-        if (!$prodiModel->find($postData['id_prodi'])) {
-            return redirect()->back()->withInput()->with('error', 'Prodi tidak valid.');
+        ]);
+
+        if (!$rules) {
+            $data = [
+                'pageTitle' => 'Edit Data User',
+                'user' => $user,
+                'prodi' => $prodiModel->findAll(),
+                'status' => $userModel->getStatus(),
+                'validation' => $validation
+            ];
+
+            return view('users/edit_data_user', $data);
+        } else {
+            // Pastikan id_prodi yang dikirim valid
+            if (!$prodiModel->find($postData['id_prodi'])) {
+                return redirect()->back()->withInput()->with('error', 'Prodi tidak valid.');
+            }
+
+            // Update data user
+            $data = [
+                'nama_user' => $postData['nama_user'],
+                'username' => $postData['username'],
+                'password' => Hash::make($postData['password']),
+                'email' => $postData['email'],
+                'status' => $postData['status'],
+                'no_telp' => $postData['no_telp'],
+                'id_prodi' => $postData['id_prodi'],
+            ];
+
+            $userModel->update($id_user, $data);
+
+            return redirect()->to('admin/users')->with('success', 'Data user berhasil diperbarui.');
         }
-
-        // Update data user
-        $userModel->update($id_user, $postData);
-
-        return redirect()->to('admin/users')->with('success', 'Data prodi berhasil diperbarui.');
     }
+
+
 
     public function delete_user($id)
     {
@@ -124,7 +261,7 @@ class User extends BaseController
         // Hapus data user
         $userModel->delete($id);
 
-        return redirect()->to('/admin/users')->with('success', 'Data user berhasil dihapus.');
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data user berhasil dihapus.');
     }
 
     public function kritik()
@@ -146,19 +283,64 @@ class User extends BaseController
     public function add_data_kritik()
     {
         $kritikModel = new kritikModel;
-        return view('view-users/kontak');
+        $data = [
+            'pageTitle' => 'Tambah Kritik',
+            'kritik' => $kritikModel,
+        ];
+        return view('view-users/kontak', $data);
     }
 
     public function save_data_kritik()
     {
         $kritikModel = new kritikModel;
-        $kritikModel->insert($this->request->getPost());
-        return redirect()->to('user/kontak-user');
+
+        $rules = $this->validate([
+            'nama' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'nama diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'email diperlukan',
+                    'valid_email' => 'masukkan email yang valid!',
+                ]
+            ],
+            'komentar' => [
+                'rules' => 'required|max_length[300]',
+                'errors' => [
+                    'required' => 'komentar diperlukan',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ],
+        ]);
+
+        if (!$rules) {
+
+            $data = [
+                'pageTitle' => 'Tambah Kritik',
+                'kritik' => $kritikModel,
+                'validation' => $this->validator
+            ];
+            return view('view-users/kontak', $data);
+        } else {
+            $data = [
+                'kritik' => $kritikModel,
+                'nama' => $this->request->getPost('nama'),
+                'email' => $this->request->getPost('email'),
+                'komentar' => $this->request->getPost('komentar'),
+            ];
+        }
+        $kritikModel->save($data);
+        return redirect()->to('user/kontak-user')->with('success', 'Pesan sudah dikirim.');
     }
     public function delete_kritik($id_kontak)
     {
         $kritikModel = new kritikModel();
-        $kritikModel->delete(['id_kontakt' => $id_kontak]);
-        return redirect()->to('admin/kritik')->with('success', 'Data user berhasil dihapus.');
+        $kritikModel->delete(['id_kontak' => $id_kontak]);
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data kritik berhasil dihapus.');
     }
 }

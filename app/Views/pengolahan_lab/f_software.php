@@ -5,7 +5,7 @@
 <div class="swal" data-swal="<?= session('success'); ?>"></div>
 
 <body>
-    <h1>Fasilitas Software Lab
+    <h1 class="text-center">Fasilitas Software Lab
         <?= ($id_ruangan - 8); ?>
     </h1>
 
@@ -15,8 +15,7 @@
                 <div class="form-group mb-0">
                     <div class="input-group-prepend">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon1">Cari</button>
-                        <input type="text" class="form-control search-input" placeholder="Cari Software"
-                            name="keyword" />
+                        <input type="text" class="form-control search-input" placeholder="Cari Software" name="keyword" />
                     </div>
 
                 </div>
@@ -48,7 +47,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($fasilitas as $fasilitas): ?>
+            <?php foreach ($fasilitas as $fasilitas) : ?>
                 <tr class="text-center">
                     <td scope="row">
                         <?= $i++; ?>
@@ -66,8 +65,7 @@
                         <?= $ruangan['nama_ruangan']; ?>
                     </td>
                     <td>
-                        <a href="/admin/hapus_data_software/<?= $fasilitas['id']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
+                        <a href="/admin/hapus_data_software/<?= $fasilitas['id']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         <a href="/admin/edit_data_software/<?= $fasilitas['id']; ?>" class="btn btn-success">Edit</a>
                     </td>
                 </tr>
@@ -78,12 +76,8 @@
         <div class="col">
             <a href="<?= route_to('admin.data.software', $id_ruangan); ?>" class="btn btn-primary">Tambah Data
                 Software</a>
-        </div>
-        <div class="col">
-            <a href="<?= route_to('export.software.excel', $id_ruangan); ?>" class="btn btn-success">Export Excel</a>
-        </div>
-        <div class="col">
             <a href="/admin/software_export/<?= $id_ruangan ?>" target="_blank" class="btn btn-warning">Export PDF</a>
+            <a href="<?= route_to('export.software.excel', $id_ruangan); ?>" class="btn btn-success">Export Excel</a>
         </div>
     </div>
     <div class="row">
@@ -97,7 +91,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

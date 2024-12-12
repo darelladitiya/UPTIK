@@ -5,7 +5,7 @@
 <div class="hero-area hero-bg">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 offset-lg-2 text-center">
+            <div class="text-center">
                 <div class="hero-text">
                     <div class="hero-text-tablecell">
                         <p class="subtitle">UPA-TIK</p>
@@ -22,7 +22,7 @@
 </div>
 <!-- end hero area -->
 <div class="container6">
-<h2 class="my-5">Pegawai UPA-TIK</h2>
+<h2 class="my-5">Data Pegawai UPA-TIK</h2>
 </div>
 <section class="usdata">
     <table class=" table table-bordered table-hover my-3">

@@ -8,7 +8,7 @@
             <?php $validation = \Config\Services::validation(); ?>
             <form action="/admin/save_data_galeri" method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
-                <?php if (!empty(session()->getFlashdata('success'))): ?>
+                <?php if (!empty(session()->getFlashdata('success'))) : ?>
                     <div class="alert alert-success">
                         <?= session()->getFlashdata('success'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty(session()->getFlashdata('fail'))): ?>
+                <?php if (!empty(session()->getFlashdata('fail'))) : ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('fail'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -31,7 +31,7 @@
                         <input type="file" class="form-control" id="foto" name="foto" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('foto')): ?>
+                <?php if ($validation->getError('foto')) : ?>
                     <div class="d-block text-danger" style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('foto'); ?>
                     </div>
@@ -40,7 +40,8 @@
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Ruangan</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="id_ruangan" name="id_ruangan">
-                            <?php foreach ($ruangan as $item): ?>
+                            <option value="">Pilih Ruangan</option>
+                            <?php foreach ($ruangan as $item) : ?>
                                 <option value="<?= $item['id_ruangan'] ?>">
                                     <?= $item['nama_ruangan'] ?>
                                 </option>
@@ -48,6 +49,11 @@
                         </select>
                     </div>
                 </div>
+                <?php if ($validation->getError('id_ruangan')) : ?>
+                    <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                        <?= $validation->getError('id_ruangan'); ?>
+                    </div>
+                <?php endif; ?>
                 <button type="submit" class="btn btn-primary">Tambah Data</button>
             </form>
         </div>

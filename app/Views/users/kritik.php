@@ -33,7 +33,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($kritik as $user): ?>
+            <?php foreach ($kritik as $user) : ?>
                 <tr class="text-center">
                     <td scope="row-1">
                         <?= $i++; ?>
@@ -51,8 +51,7 @@
                         <?= $user['komentar']; ?>
                     </td>
                     <td>
-                        <a href="/admin/hapus_data_kritik/<?= $user['id_kontak']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
+                        <a href="/admin/hapus_data_kritik/<?= $user['id_kontak']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -76,7 +75,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

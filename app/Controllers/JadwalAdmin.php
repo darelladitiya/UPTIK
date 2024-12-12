@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\JamModel;
+use App\Models\PengajuanModel;
 use App\Models\RuanganModel;
 use CodeIgniter\HTTP\ResponseInterface;
-
 use App\Models\JadwalModel;
 use App\Models\th_ajarModel;
 
@@ -24,7 +24,7 @@ class JadwalAdmin extends BaseController
         session()->set('jadwal_keyword', $keyword);
 
         // Query dasar dengan join
-        $query = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'REGULER');
+        $query = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'Reguler');
 
         // Terapkan filter pencarian berdasarkan keyword
         if ($keyword) {
@@ -55,7 +55,7 @@ class JadwalAdmin extends BaseController
 
         // Siapkan data untuk views
         $data = [
-            'pageTitle' => 'Jadwal-reguler',
+            'pageTitle' => 'Jadwal-Reguler',
             'jadwal' => $result,
             'pager' => $pager, // Kirim pager ke view
             'keyword' => $keyword,
@@ -78,9 +78,10 @@ class JadwalAdmin extends BaseController
         $ruanganModel = new RuanganModel();
         $jadwal = $jadwalmodel->joinRuangan()->joinTA()->joinProdi()->joinJam1();
         $data = [
-            'pageTitle' => 'jadwal',
+            'pageTitle' => 'Edit Jadwal',
             'jadwal' => $jadwal->where('jadwal.id_jadwal', $id_jadwal)->first(),
-            'ruangan' => $ruanganModel->findAll()
+            'ruangan' => $ruanganModel->findAll(),
+            'hari' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'] // Define the $hari variable here
         ];
 
         return view('jadwal/edit-reguler', $data);
@@ -93,42 +94,42 @@ class JadwalAdmin extends BaseController
             'mk' => [
                 'rules' => 'required|max_length[50]',
                 'errors' => [
-                    'required' => 'gambar di perlukan',
+                    'required' => 'mata kuliah diperlukan',
                     'max_length' => 'terlalu panjang!'
                 ]
             ],
             'nama_dosen' => [
                 'rules' => 'required|min_length[1]',
                 'errors' => [
-                    'required' => 'nama di perlukan',
+                    'required' => 'nama dosen diperlukan',
                     'min_length' => 'terlalu pendek!'
                 ]
             ],
             'kelas' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'kelas di perlukan',
+                    'required' => 'kelas diperlukan',
                 ]
             ],
             'jam' => [
                 'rules' => 'required',
-                'errors' => 'jam harus di isi'
+                'errors' => 'jam diperlukan'
             ],
             'nama_prodi' => [
                 'rules' => 'required',
-                'errors' => 'prodi harus di isi'
+                'errors' => 'prodi diperlukan'
             ],
             'nama_ruangan' => [
                 'rules' => 'required',
-                'errors' => 'nama ruangan harus di isi'
+                'errors' => 'nama ruangan harus dipilih'
             ],
             'jenis' => [
                 'rules' => 'required',
-                'errors' => 'jenis harus di isi'
+                'errors' => 'jenis diperlukan'
             ],
             'hari' => [
                 'rules' => 'required',
-                'errors' => 'hari harus di isi'
+                'errors' => 'hari harus dipilih'
             ],
         ]);
 
@@ -140,9 +141,10 @@ class JadwalAdmin extends BaseController
             $ruanganModel = new RuanganModel();
             $jadwal = $jadwalmodel->joinRuangan()->joinTA()->joinProdi()->joinJam1()->where('jadwal.id_jadwal', $id_jadwal)->first();
             $data = [
-                'pageTitle' => 'software',
+                'pageTitle' => 'Edit Jadwal',
                 'jadwal' => $jadwal,
                 'ruangan' => $ruanganModel->findAll(),
+                'hari' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'],
                 'validation' => $this->validator
             ];
 
@@ -151,13 +153,11 @@ class JadwalAdmin extends BaseController
         if ($referrer && is_string($referrer)) {
             $data = $this->request->getPost();
             $jadwalmodel->update($id_jadwal, $data);
-            return redirect()->to($referrer)->with('success', 'Data berhasil diubah.');
+            return redirect()->to($referrer)->with('success', 'Data berhasil diperbarui.');
         } else {
             // Jika tidak ada URL referer, arahkan pengguna ke halaman jadwal
-            return redirect()->to('admin/jadwal')->with('success', 'Data berhasil diubah.');
+            return redirect()->to('admin/jadwal')->with('success', 'Data berhasil diperbarui.');
         }
-
-
     }
 
 
@@ -174,7 +174,7 @@ class JadwalAdmin extends BaseController
         session()->set('jadwal_keyword', $keyword);
 
         // Query dasar dengan join
-        $query = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'NONREGULER');
+        $query = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'Nonreguler');
 
         // Terapkan filter pencarian berdasarkan keyword
         if ($keyword) {
@@ -211,7 +211,7 @@ class JadwalAdmin extends BaseController
 
         // Siapkan data untuk view
         $data = [
-            'pageTitle' => 'Jadwal-reguler',
+            'pageTitle' => 'Jadwal-Nonreguler',
             'jadwal' => $result,
             'pager' => $pager, // Kirim pager ke view
             'keyword' => $keyword,
@@ -269,7 +269,7 @@ class JadwalAdmin extends BaseController
 
         // Siapkan data untuk view
         $data = [
-            'pageTitle' => 'Jadwal-reguler',
+            'pageTitle' => 'Jadwal-UAS',
             'jadwal' => $result,
             'pager' => $pager, // Kirim pager ke view
             'keyword' => $keyword,
@@ -326,7 +326,7 @@ class JadwalAdmin extends BaseController
 
         // Siapkan data untuk view
         $data = [
-            'pageTitle' => 'Jadwal-reguler',
+            'pageTitle' => 'Jadwal-UTS',
             'jadwal' => $result,
             'pager' => $pager, // Kirim pager ke view
             'keyword' => $keyword,
@@ -342,8 +342,106 @@ class JadwalAdmin extends BaseController
     {
         $ruanganModel = new JadwalModel();
         $ruanganModel->delete(['id_jadwal' => $id_jadwal]);
-        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data berhasil dihapus.');
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data jadwal berhasil dihapus.');
     }
 
 
+    public function pengajuanJadwal()
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'REGULER')->paginate(10, 'pengajuan');
+        $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $jam = new JamModel();
+        $data = [
+            'pageTitle' => 'Pengajuan-Admin',
+            'pengajuan' => $pengajuan,
+            'pager' => $pengajuanModel->pager,
+            'hari' => $hari,
+            'jam' => $jam->findAll() // Kirim keyword kembali ke view
+        ];
+
+        return view('pengajuan_admin/pengajuan-admin', $data);
+
+    }
+    public function pengajuanJadwalNonReguler()
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'NONREGULER')->paginate(10, 'pengajuan');
+        $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $jam = new JamModel();
+        $data = [
+            'pageTitle' => 'Pengajuan-Admin',
+            'pengajuan' => $pengajuan,
+            'pager' => $pengajuanModel->pager,
+            'hari' => $hari,
+            'jam' => $jam->findAll() // Kirim keyword kembali ke view
+        ];
+
+        return view('pengajuan_admin/pengajuan-nonreguler', $data);
+
+    }
+    public function pengajuanJadwalUAS()
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'UAS')->paginate(10, 'pengajuan');
+        $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $jam = new JamModel();
+        $data = [
+            'pageTitle' => 'Pengajuan-Admin',
+            'pengajuan' => $pengajuan,
+            'pager' => $pengajuanModel->pager,
+            'hari' => $hari,
+            'jam' => $jam->findAll() // Kirim keyword kembali ke view
+        ];
+
+        return view('pengajuan_admin/pengajuan-uas', $data);
+
+    }
+    public function pengajuanJadwalUTS()
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jenis', 'UTS')->paginate(10, 'pengajuan');
+        $hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+        $jam = new JamModel();
+        $data = [
+            'pageTitle' => 'Pengajuan-Admin',
+            'pengajuan' => $pengajuan,
+            'pager' => $pengajuanModel->pager,
+            'hari' => $hari,
+            'jam' => $jam->findAll() // Kirim keyword kembali ke view
+        ];
+
+        return view('pengajuan_admin/pengajuan-uts', $data);
+
+    }
+
+    public function approvePengajuan($id)
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->getPengajuanById($id);
+        $jam = $pengajuan['id_jam'];
+        $id_thn = $pengajuan['id_thn'];
+        $mk = $pengajuan['mk'];
+        $kelas = $pengajuan['kelas'];
+        $id_ruangan = $pengajuan['id_ruangan'];
+        $nama_dosen = $pengajuan['nama_dosen'];
+        $jenis = $pengajuan['jenis'];
+        $id_thn = $pengajuan['id_thn'];
+        $hari = $pengajuan['hari'];
+        $id_prodi = $pengajuan['id_prodi'];
+
+        // Perbaikan operator panah di bawah ini
+        $pengajuanModel->insertApprovedSchedule($mk, $kelas, $id_ruangan, $jam, $nama_dosen, $jenis, $id_thn, $hari, $id_prodi);
+        $pengajuanModel->deleteSchedule($jam);
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data jadwal telah disetujui.');
+    }
+
+    public function deletePengajuan($id)
+    {
+        $pengajuanModel = new PengajuanModel();
+        $pengajuan = $pengajuanModel->getPengajuanById($id);
+        $jam = $pengajuan['id_jam'];
+        $pengajuanModel->deleteSchedule($jam);
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data jadwal berhasil dihapus.');
+    }
 }

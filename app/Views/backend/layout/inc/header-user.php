@@ -12,6 +12,13 @@
                     </div>
                     <!-- logo -->
 
+                    <?php if (session()->has('success')) : ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert">
+                            <?= session('success') ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="alert"></button>
+                        </div>
+                    <?php endif ?>
+
                     <!-- menu start -->
                     <nav class="main-menu">
                         <ul>
@@ -24,7 +31,7 @@
                                     <li><a href="#layanan">Layanan</a></li>
                                     <li><a href="#prosedur">Prosedur</a></li>
                                     <li><a href="#tata-tertib">Tata Tertib</a></li>
-                                    <li><a href="#">Denah</a></li>
+                                    <li><a href="#denah">Denah</a></li>
                                 </ul>
                             </li>
                             <li><a href="<?= route_to('user.usfasilitas'); ?>">Fasilitas</a>
@@ -42,8 +49,8 @@
                             </li>
                             <li><a href="#">Data</a>
                                 <ul class="sub-menu">
-                                    <li><a href="<?= route_to('user.usdatasis'); ?>">Siswa PKL</a></li>
                                     <li><a href="<?= route_to('user.usdatapg'); ?>">Pegawai</a></li>
+                                    <li><a href="<?= route_to('user.usdatasis'); ?>">Siswa PKL</a></li>
                                 </ul>
                             </li>
                             <li><a href="<?= route_to('user.kontak'); ?>">Kontak</a></li>
@@ -57,4 +64,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ambil tombol close
+        var closeButton = document.getElementById('alert');
+
+        // Jika tombol close ditekan
+        closeButton.addEventListener('click', function () {
+            // Hilangkan pesan flash
+            var flashMessage = document.getElementById('alert');
+            flashMessage.style.display = 'none';
+        });
+    });
+</script>
 <!-- end header -->

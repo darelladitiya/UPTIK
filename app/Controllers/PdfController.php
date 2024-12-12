@@ -18,6 +18,9 @@ use App\Models\userModel;
 use App\Models\kritikModel;
 use App\Models\fasilitas_softwareModel;
 use App\Models\fasilitas_hardwareModel;
+use App\Models\JamModel;
+use App\Models\JadwalDetailModel;
+use Dompdf\Options;
 
 
 class PdfController extends BaseController
@@ -101,13 +104,20 @@ class PdfController extends BaseController
         $this->response->setHeader('Content-Disposition', 'attachment; filename="data-barang.pdf"');
         return $this->response->setBody($output);
     }
-    public function exportJadwal()
+    public function exportJadwal($jenis)
     {
         $jadwalModel = new JadwalModel();
+        $semester = $jadwalModel->getSemester();
+        $thn_awal = $jadwalModel->getTahunAwal();
+        $thn_akhir = $jadwalModel->getTahunAkhir();
 
         $data = [
             'pageTitle' => 'export pdf',
-            'jadwal' => $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jadwal.jenis', 'REGULER')->findAll()
+            'jadwal' => $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jadwal.jenis', $jenis)->findAll(),
+            'jenis' => $jenis,
+            'thn_awal' => $thn_awal,
+            'thn_akhir' => $thn_akhir,
+            'semester' => $semester
         ];
 
         $view = view('pdf/export-jadwal', $data);
@@ -122,10 +132,13 @@ class PdfController extends BaseController
         $output = $dompdf->output();
 
         // Download PDF
+        $filename = 'jadwal-' . $jenis . '.pdf';
         $this->response->setContentType('application/pdf');
-        $this->response->setHeader('Content-Disposition', 'attachment; filename="jadwal-reguler.pdf"');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
         return $this->response->setBody($output);
     }
+
+
     public function exportJadwalNonReguler()
     {
         $jadwalModel = new JadwalModel();
@@ -237,13 +250,22 @@ class PdfController extends BaseController
         $this->response->setHeader('Content-Disposition', 'attachment; filename="data-fasilitas-software.pdf"');
         return $this->response->setBody($output);
     }
-    public function exportProdiReguler($idProdi)
+    public function exportProdiReguler($idProdi, $namaProdi, $jenis)
     {
         $jadwalModel = new JadwalModel();
-        $jadwalProdi = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jadwal.id_prodi', $idProdi)->where('jenis', 'REGULER')->findAll();
+        $semester = $jadwalModel->getSemester();
+        $thn_awal = $jadwalModel->getTahunAwal();
+        $thn_akhir = $jadwalModel->getTahunAkhir();
+
+        $jadwalProdi = $jadwalModel->joinRuangan()->joinTA()->joinProdi()->joinJam()->where('jadwal.id_prodi', $idProdi)->where('jenis', $jenis)->findAll();
         $data = [
             'pageTitle' => 'export pdf',
-            'jadwal' => $jadwalProdi
+            'jadwal' => $jadwalProdi,
+            'namaProdi' => $namaProdi,
+            'jenis' => $jenis,
+            'thn_awal' => $thn_awal,
+            'thn_akhir' => $thn_akhir,
+            'semester' => $semester
         ];
 
         $view = view('pdf/export-reguler', $data);
@@ -258,8 +280,9 @@ class PdfController extends BaseController
         $output = $dompdf->output();
 
         // Download PDF
+        $filename = 'prodi-' . $jenis . '.pdf';
         $this->response->setContentType('application/pdf');
-        $this->response->setHeader('Content-Disposition', 'attachment; filename="prodi-reguler.pdf"');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
         return $this->response->setBody($output);
     }
     public function exportProdiNonReguler($idProdi)
@@ -529,6 +552,53 @@ class PdfController extends BaseController
         // Download PDF
         $this->response->setContentType('application/pdf');
         $this->response->setHeader('Content-Disposition', 'attachment; filename="data-Siswa.pdf"');
+        return $this->response->setBody($output);
+    }
+
+    public function exportV_Jadwal($jenis)
+    {
+        $jadwalModel = new JadwalModel();
+
+        // Fetch required data from the model
+        $thn_awal = $jadwalModel->getTahunAwal();
+        $thn_akhir = $jadwalModel->getTahunAkhir();
+        $semester = $jadwalModel->getSemester();
+        $hari = $jadwalModel->getHari();
+        $jam = $jadwalModel->getJam();
+        $ruangan = $jadwalModel->getRuangan();
+        $jadwal = $jadwalModel->getJadwal($jenis);
+
+
+        // Calculate the number of rooms
+        $jumlahLab = count($ruangan);
+
+        $data = [
+            'thn_awal' => $thn_awal,
+            'thn_akhir' => $thn_akhir,
+            'hari' => $hari,
+            'jenis' => $jenis,
+            'jam' => $jam,
+            'ruangan' => $ruangan,
+            'jadwal' => $jadwal,
+            'jumlahLab' => $jumlahLab,
+            'semester' => $semester // Pass the calculated value to the view
+        ];
+
+        $view = view('pdf/export-v_jadwal', $data);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        // Output PDF
+        $output = $dompdf->output();
+
+        // Download PDF
+        $filename = 'data-Jadwal-' . $jenis . '.pdf';
+        $this->response->setContentType('application/pdf');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
         return $this->response->setBody($output);
     }
 }

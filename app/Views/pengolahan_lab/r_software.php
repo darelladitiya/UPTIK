@@ -5,7 +5,7 @@
 
 
 <body>
-    <h1 class="my-3">Fasilitas Software</h1>
+    <h1 class="my-3 text-center">Fasilitas Software</h1>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr class="text-center">
@@ -17,7 +17,7 @@
 
         <tbody>
             <?php $i = 1; ?>
-            <?php foreach ($fasilitas as $fasilitas): ?>
+            <?php foreach ($fasilitas as $fasilitas) : ?>
                 <tr class="text-center">
                     <td scope="row-1">
                         <?= $i++; ?>
@@ -29,8 +29,7 @@
                         <?= $fasilitas['id_ruangan']; ?>
                     </td>
                     <td>
-                        <a href="<?= route_to('detail.fasilitas', $fasilitas['id_ruangan']); ?>"
-                            class="btn btn-success">Detail</a>
+                        <a href="<?= route_to('detail.fasilitas', $fasilitas['id_ruangan']); ?>" class="btn btn-success">Detail</a>
                     </td>
 
 

@@ -61,7 +61,7 @@
             <label for="inputEmail3" class="col-sm-2 col-form-label">Ruangan</label>
             <div class="col-sm-10">
                 <select name="nama_ruangan" id="nama_ruangan" class="form-control">
-                    <option value=""></option>
+                    <option value="">Pilih Ruangan</option>
                     <?php foreach ($ruangan as $row): ?>
                         <option value="<?= $row['nama_ruangan'] ?>">
                             <?= $row['nama_ruangan'] ?>
@@ -70,9 +70,9 @@
                 </select>
             </div>
         </div>
-        <?php if ($validation->getError('ruangan')): ?>
+        <?php if ($validation->getError('nama_ruangan')): ?>
             <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
-                <?= $validation->getError('ruangan'); ?>
+                <?= $validation->getError('nama_ruangan'); ?>
             </div>
         <?php endif; ?>
 

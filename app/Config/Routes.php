@@ -22,6 +22,7 @@ $routes->group('admin', static function ($routes) {
         $routes->get('siswa', 'Siswa::index', ['as' => 'admin.siswa']);
         $routes->get('pegawai', 'Pegawai::index', ['as' => 'admin.pegawai']);
 
+
         $routes->get('hapus_data_kritik/(:any)', 'User::delete_kritik/$1', ['as' => 'admin.hapus.data.kritik']);
 
         $routes->get('lab_hardware/(:segment)', 'HardwareController::detail/$1', ['as' => 'admin.lab.2']);
@@ -43,19 +44,32 @@ $routes->group('admin', static function ($routes) {
         $routes->get('siswa_export', 'PdfController::exportSiswa', ['as' => 'siswa.export.pdf']);
 
 
+
+        //PENGAJUAN ADMIN
+        $routes->get('pengajuan', 'JadwalAdmin::pengajuanJadwal', ['as' => 'admin.pengajuan']);
+        $routes->get('pengajuan-nonreguler', 'JadwalAdmin::pengajuanJadwalNonReguler', ['as' => 'admin.pengajuan.nonreguler']);
+        $routes->get('pengajuan-uas', 'JadwalAdmin::pengajuanJadwalUAS', ['as' => 'admin.pengajuan.uas']);
+        $routes->get('pengajuan-uts', 'JadwalAdmin::pengajuanJadwalUTS', ['as' => 'admin.pengajuan.uts']);
+
         //pdf jadwal admin
-        $routes->get('jadwal_export', 'PdfController::exportJadwal', ['as' => 'jadwal.export.pdf']);
+        $routes->get('jadwal_export/(:segment)', 'PdfController::exportJadwal/$1', ['as' => 'jadwal.export.pdf']);
         $routes->get('jadwal_nonreguler', 'PdfController::exportJadwalNonReguler', ['as' => 'jadwal.nonreguler.pdf']);
         $routes->get('jadwal_uas', 'PdfController::exportJadwalUAS', ['as' => 'jadwal.uas.pdf']);
         $routes->get('jadwal_uts', 'PdfController::exportJadwalUTS', ['as' => 'jadwal.uts.pdf']);
 
 
+        //pengajuan admin
+        $routes->get('hapus_data_pengajuan/(:num)', 'JadwalAdmin::deletePengajuan/$1', ['as' => 'admin.hapus.data.pengajuan']);
+        $routes->get('approve_data_pengajuan/(:segment)', 'JadwalAdmin::approvePengajuan/$1', ['as' => 'admin.approve.pengajuan']);
 
         //Excel export
         $routes->get('jadwal_excel/(:segment)', 'ExcelController::index/$1', ['as' => 'export.reguler.excel']);
+        $routes->get('excel_user', 'ExcelController::excelUser', ['as' => 'export.excel.user']);
         $routes->get('excel_filterHari/(:segment)/(:segment)', 'ExcelController::filterHari/$1/$2', ['as' => 'export.regulerFilter.excel']);
         $routes->get('excel_filterJam/(:segment)/(:segment)', 'ExcelController::filterJam/$1/$2', ['as' => 'export.regulerJam.excel']);
         $routes->get('excel_Software/(:segment)', 'ExcelController::filterSoftware/$1', ['as' => 'export.software.excel']);
+        $routes->get('excel_Hardware/(:segment)', 'ExcelController::filterHardware/$1', ['as' => 'export.hardware.excel']);
+
 
 
 
@@ -177,6 +191,8 @@ $routes->group('admin', static function ($routes) {
         $routes->get('jadwal-uts', 'JadwalAdmin::jadwalUTS', ['as' => 'admin.jadwal.uts']);
         $routes->post('jadwal-uts', 'JadwalAdmin::jadwalUTS', ['as' => 'admin.jadwal.uts']);
 
+        $routes->get('register', 'Register::registerForm', ['as' => 'admin.register']);
+        $routes->post('register', 'Register::saveForm', ['as' => 'admin.save']);
     });
 
 
@@ -192,16 +208,13 @@ $routes->group('admin', static function ($routes) {
         $routes->post('reset-password-handler/(:any)', 'AuthController::resetPasswordHandler/$1', ['as' => 'reset-password-handler']);
 
         //register
-        $routes->get('register', 'Register::registerForm', ['as' => 'admin.register']);
-        $routes->post('register', 'Register::saveForm', ['as' => 'admin.save']);
-
-
-
 
     });
 });
 
 $routes->view('/', 'view-users/home', ['as' => 'home.user']);
+
+//export excel dan pdf user
 
 $routes->group('user', static function ($routes) {
 
@@ -216,11 +229,19 @@ $routes->group('user', static function ($routes) {
     $routes->get('jadwal-nonreguler', 'Jadwal::nonReguler_jadwal', ['as' => 'user.nonreguler']);
     $routes->get('jadwal-uas', 'Jadwal::jadwal_UAS', ['as' => 'user.uas']);
     $routes->get('jadwal-uts', 'Jadwal::jadwal_UTS', ['as' => 'user.uts']);
+    $routes->get('get-data-from-server/(:segment)/(:segment)', 'Jadwal::getDataFromServer/$1/$2', ['as' => 'user.get.data']);
+    //excel
+    $routes->get('excel_Reguler/(:segment)', 'ExcelController::jadwalReguler/$1', ['as' => 'export.jadwal-reguler.excel']);
+    //pdf
+    $routes->get('prodi-jadwal-reguler/(:segment)', 'PdfController::exportV_Jadwal/$1', ['as' => 'export.vjadwal.pdf']);
 
     $routes->group('', ['filter' => 'cifilter:login'], static function ($routes) {
 
 
         $routes->get('logout', 'AdminController::logoutUserHandler', ['as' => 'user.logout']);
+
+
+
 
         //Jadwal Reguler
 
@@ -228,6 +249,7 @@ $routes->group('user', static function ($routes) {
         $routes->post('jadwal-ajax-3', 'Jadwal::getJamByRuangan3', ['as' => 'user.ajax.jadwal-3']);
         $routes->post('jadwal-save', 'Jadwal::save_jadwal', ['as' => 'user.save.jadwal']);
         $routes->get('jadwal-prodi-reguler/(:num)', 'Jadwal::tabelReguler/$1', ['as' => 'user.reguler.jadwal']);
+        $routes->post('jadwal-prodi-reguler/(:num)', 'Jadwal::tabelReguler/$1', ['as' => 'user.reguler.jadwal']);
         $routes->get('hapus-prodi-reguler/(:num)', 'Jadwal::deleteProdiReguler/$1', ['as' => 'user.hapus.prodi']);
 
         //Non reguler
@@ -236,6 +258,7 @@ $routes->group('user', static function ($routes) {
         $routes->post('jadwal-save-nonreguler', 'Jadwal::save_nonReguler', ['as' => 'user.save.nonreguler']);
         $routes->post('jadwal-ajax', 'Jadwal::getJamByRuangan', ['as' => 'user.ajax.jadwal']);
         $routes->get('jadwal-prodi-nonreguler/(:num)', 'Jadwal::tabelNonReguler/$1', ['as' => 'user.nonreguler.jadwal']);
+        $routes->post('jadwal-prodi-nonreguler/(:num)', 'Jadwal::tabelNonReguler/$1', ['as' => 'user.nonreguler.jadwal']);
         $routes->get('hapus-prodi-nonreguler/(:num)', 'Jadwal::deleteProdiNonReguler/$1', ['as' => 'user.hapus.prodi']);
 
         //UAS
@@ -244,6 +267,7 @@ $routes->group('user', static function ($routes) {
         $routes->post('jadwal-save-uas', 'Jadwal::save_uas', ['as' => 'user.save.uas']);
         $routes->post('jadwal-ajax-1', 'Jadwal::getJamByRuangan1', ['as' => 'user.ajax.jadwal-1']);
         $routes->get('jadwal-prodi-uas/(:num)', 'Jadwal::tabelUAS/$1', ['as' => 'user.uas.jadwal']);
+        $routes->post('jadwal-prodi-uas/(:num)', 'Jadwal::tabelUAS/$1', ['as' => 'user.uas.jadwal']);
         $routes->get('hapus-prodi-uas/(:num)', 'Jadwal::deleteProdiUAS/$1', ['as' => 'user.hapus.prodi']);
 
         // UTS
@@ -252,11 +276,12 @@ $routes->group('user', static function ($routes) {
         $routes->post('jadwal-save-uts', 'Jadwal::save_uts', ['as' => 'user.save.uts']);
         $routes->post('jadwal-ajax-2', 'Jadwal::getJamByRuangan2', ['as' => 'user.ajax.jadwal-2']);
         $routes->get('jadwal-prodi-uts/(:num)', 'Jadwal::tabelUTS/$1', ['as' => 'user.uts.jadwal']);
+        $routes->post('jadwal-prodi-uts/(:num)', 'Jadwal::tabelUTS/$1', ['as' => 'user.uts.jadwal']);
         $routes->get('hapus-prodi-uts/(:num)', 'Jadwal::deleteProdiUTS/$1', ['as' => 'user.hapus.prodi']);
 
 
         //PDF JADWAl USERS
-        $routes->get('prodi-reguler/(:num)', 'PdfController::exportProdiReguler/$1', ['as' => 'reguler.export.pdf']);
+        $routes->get('prodi-reguler/(:num)/(:segment)/(:segment)', 'PdfController::exportProdiReguler/$1/$2/$3', ['as' => 'reguler.export.pdf']);
         $routes->get('prodi-nonreguler/(:num)', 'PdfController::exportProdiNonReguler/$1', ['as' => 'nonreguler.export.pdf']);
         $routes->get('prodi-uas/(:num)', 'PdfController::exportProdiUAS/$1', ['as' => 'uas.export.pdf']);
         $routes->get('prodi-uts/(:num)', 'PdfController::exportProdiUTS/$1', ['as' => 'uts.export.pdf']);
@@ -264,8 +289,7 @@ $routes->group('user', static function ($routes) {
 
         //Pengajuan
         $routes->get('ajukan-jadwal', 'Jadwal::ajukanJadwal', ['as' => 'user.ajukan']);
-
-
+        $routes->get('delete-pengajuan-notif/(:segment)/(:segment)', 'Jadwal::deleteNotif/$1/$2', ['as' => 'user.notif']);
     });
 
 
@@ -279,8 +303,6 @@ $routes->group('user', static function ($routes) {
         $routes->get('password-user/reset/(:any)', 'AuthController::resetPasswordUser/$1', ['as' => 'user.reset-password']);
         $routes->post('reset-password-handler-user/(:any)', 'AuthController::resetPasswordHandlerUser/$1', ['as' => 'user-reset-password-handler']);
     });
-
-
 });
 
 $routes->group('display', static function ($routes) {
@@ -295,5 +317,4 @@ $routes->group('display', static function ($routes) {
     $routes->get('harirabu', 'DisplayJadwal::hariRabu', ['as' => 'display.rabu']);
     $routes->get('harikamis', 'DisplayJadwal::hariKamis', ['as' => 'display.kamis']);
     $routes->get('harijumat', 'DisplayJadwal::hariJumat', ['as' => 'display.jumat']);
-
 });

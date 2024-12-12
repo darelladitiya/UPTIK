@@ -3,7 +3,7 @@
 <!-- Page Content Here -->
 
 <div class="swal" data-swal="<?= session('success'); ?>"></div>
-<h1 class="my-3">Pegawai UPA-TIK</h1>
+<h1 class="my-3 text-center">Pegawai UPA-TIK</h1>
 <table class=" table table-bordered table-hover my-3">
     <thead class="thead-dark">
         <tr class="text-center">
@@ -26,7 +26,7 @@
         // Hitung nilai $i
         $i = 1 + (10 * ($page - 1));
         ?>
-        <?php foreach ($pegawai as $fasilitas): ?>
+        <?php foreach ($pegawai as $fasilitas) : ?>
             <tr class="text-center">
                 <td scope="row">
                     <?= $i++; ?>
@@ -38,9 +38,7 @@
                     <?= $fasilitas['nip']; ?>
                 </td>
                 <td>
-                    <a href="<?= route_to('admin.hapus.data.pegawai', $fasilitas['id']); ?>"
-                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');"
-                        class="btn btn-danger">Delete</a>
+                    <a href="<?= route_to('admin.hapus.data.pegawai', $fasilitas['id']); ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                     <a href="<?= route_to('admin.edit.data.pegawai', $fasilitas['id']); ?>" class="btn btn-success">Edit</a>
                 </td>
             </tr>
@@ -63,7 +61,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

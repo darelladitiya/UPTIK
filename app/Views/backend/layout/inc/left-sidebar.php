@@ -46,9 +46,9 @@
                         <span class="micon bi bi-mortarboard"></span><span class="mtext mr-3 pr-3">Data Akademik</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= route_to('admin.data.akademik'); ?>">TA</a></li>
+                        <li><a href="<?= route_to('admin.data.akademik'); ?>">Tahun Ajaran</a></li>
                         <li><a href="<?= route_to('admin.jurusan'); ?>">Jurusan</a></li>
-                        <li><a href="<?= route_to('admin.prodi'); ?>">Prodi</a></li>
+                        <li><a href="<?= route_to('admin.prodi'); ?>">Program Studi</a></li>
                         <li><a href="<?= route_to('admin.unit'); ?>">Unit</a></li>
                     </ul>
                 </li>
@@ -61,6 +61,17 @@
                         <li><a href="<?= route_to('admin.jadwal.nonR'); ?>">Non-Reguler</a></li>
                         <li><a href="<?= route_to('admin.jadwal.uas'); ?>">UAS</a></li>
                         <li><a href="<?= route_to('admin.jadwal.uts'); ?>">UTS</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-envelope-paper "></span><span class="mtext">Pengajuan</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= route_to('admin.pengajuan'); ?>">Reguler</a></li>
+                        <li><a href="<?= route_to('admin.pengajuan.nonreguler'); ?>">Non-Reguler</a></li>
+                        <li><a href="<?= route_to('admin.pengajuan.uas'); ?>">UAS</a></li>
+                        <li><a href="<?= route_to('admin.pengajuan.uts'); ?>">UTS</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

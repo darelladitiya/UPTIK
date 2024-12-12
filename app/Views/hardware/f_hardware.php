@@ -6,7 +6,7 @@
 
 
 <body>
-    <h1>Fasilitas Hardware Lab
+    <h1 class="text-center">Fasilitas Hardware Lab
         <?= ($id_ruangan - 8); ?>
     </h1>
     <div class="container">
@@ -67,7 +67,7 @@
                     </td>
                     <td>
                         <a href="/admin/hapus_data_hardware/<?= $fasilitas['id']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
+                            onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         <a href="/admin/edit_data_hardware/<?= $fasilitas['id']; ?>" class="btn btn-success">Edit</a>
                     </td>
                 </tr>
@@ -77,10 +77,9 @@
     <div class="row my-3">
         <div class="col">
             <a href="<?= route_to('admin.data.hardware', $id_ruangan); ?>" class="btn btn-primary">Tambah Data
-                Hardware</a>
-        </div>
-        <div class="col">
-            <a href="/admin/hardware_export/<?= $id_ruangan ?>" target="_blank" class="btn btn-warning">Export PDF</a>
+                Hardware</a>       
+                <a href="/admin/hardware_export/<?= $id_ruangan ?>" target="_blank" class="btn btn-warning">Export PDF</a>
+                <a href="<?= route_to('export.hardware.excel', $id_ruangan); ?>" class="btn btn-success">Export Excel</a>
         </div>
     </div>
     <div class="row">

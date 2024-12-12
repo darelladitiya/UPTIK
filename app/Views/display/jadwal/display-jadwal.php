@@ -27,7 +27,7 @@
             <marquee behavior="scroll" direction="left">
                 <?php foreach ($jadwalData as $a): ?>
                     Ruangan:
-                    <?= $a['nama_ruangan']; ?> Sedang di pakai oleh
+                    <?= $a['nama_ruangan']; ?> sedang dipakai oleh
                     Dosen:
                     <?= $a['nama_dosen']; ?>
                     Kelas:
@@ -44,7 +44,7 @@
 <!-- end breadcrumb section -->
 
 
-<div id="myCarousel" class="carousel slide row" data-bs-ride="carousel" data-bs-interval="5000">
+<div id="myCarousel" class="carousel slide row" data-bs-ride="carousel" data-bs-interval="9000">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
@@ -129,7 +129,7 @@
     }
 
     // Panggil fungsi updateJadwal secara berkala setiap 60 detik
-    setInterval(updateJadwal, 60000); // 60000 milidetik = 60 detik
+    setInterval(updateJadwal, 180000); // 60000 milidetik = 60 detik
 </script>
 
 

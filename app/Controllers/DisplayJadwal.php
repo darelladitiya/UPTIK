@@ -24,7 +24,7 @@ class DisplayJadwal extends BaseController
         $hari4 = $jadwalModel->getHari('Jumat');
         $jam = $jadwalModel->getJam();
         $ruangan = $jadwalModel->getRuangan();
-        $jadwal1 = $jadwalModel->getJadwal();
+        $jadwal1 = $jadwalModel->getJadwal('reguler');
         $jumlahLab = count($ruangan);
 
         // Initialize variables
@@ -47,7 +47,6 @@ class DisplayJadwal extends BaseController
         // Checking if it's a weekend or before 07:00
         if (date('N') > 5 || $jam_sekarang < '07.00') {
             $message = "Saat ini bukan waktu untuk melihat jadwal karena sedang libur";
-
         } elseif ($jam_sekarang >= '17.30') {
             $message = "Sedang tidak ada jadwal di lab saat ini";
         } else {
@@ -146,7 +145,6 @@ class DisplayJadwal extends BaseController
         // Checking if it's a weekend or before 07:00
         if (date('N') > 5 || $jam_sekarang < '07.00') {
             $message = "Saat ini bukan waktu untuk melihat jadwal karena sedang libur";
-
         } elseif ($jam_sekarang >= '17.30') {
             $message = "Sedang tidak ada jadwal di lab saat ini";
         } else {
@@ -211,7 +209,7 @@ class DisplayJadwal extends BaseController
         $hari = $jadwalModel->getHari();
         $jam = $jadwalModel->getJam();
         $ruangan = $jadwalModel->getRuangan();
-        $jadwal = $jadwalModel->getJadwal();
+        $jadwal = $jadwalModel->getJadwal('reguler');
 
         // Calculate the number of rooms
         $jumlahLab = count($ruangan);
@@ -224,13 +222,12 @@ class DisplayJadwal extends BaseController
             'ruangan' => $ruangan,
             'jadwal' => $jadwal,
             'jumlahLab' => $jumlahLab,
-            'semester' => $semester// Pass the calculated value to the view
+            'semester' => $semester // Pass the calculated value to the view
 
 
         ];
 
         return view('display/jadwal/vReguler', $data);
-
     }
 
     public function allJadwal()
@@ -328,6 +325,4 @@ class DisplayJadwal extends BaseController
 
         return view('display/hari/jumat', $data);
     }
-
-
 }

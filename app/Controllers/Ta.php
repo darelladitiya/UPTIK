@@ -26,22 +26,63 @@ class Ta extends BaseController
 
     public function add_data_ta()
     {
-        $thjrModel = new th_ajarModel;
-        return view('data_akademik/add_data_ta');
+        // Load the validation library
+        $validation = \Config\Services::validation();
+
+        // Pass the validation object to the view
+        return view('data_akademik/add_data_ta', ['pageTitle' => 'Tambah Data Tahun Ajaran', 'validation' => $validation]);
     }
 
     public function save_data_ta()
     {
         $thjrModel = new th_ajarModel;
-        $data = [
-        'thn_awal' => $this->request->getPost('thn_awal'),
-        'thn_akhir' => $this->request->getPost('thn_akhir'),
-        'semester' => $this->request->getPost('semester'),
-        'status' => 'TIDAK', // Set status ke "TIDAK" secara default
-        ];
-        $thjrModel->insert($data);
-        return redirect()->to('admin/data_akademik')->with('success', 'Data berhasil disimpan.');
+
+        $rules = $this->validate([
+            'thn_awal' => [
+                'rules' => 'required|max_length[4]',
+                'errors' => [
+                    'required' => 'tahun awal diperlukan',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ],
+            'thn_akhir' => [
+                'rules' => 'required|max_length[4]',
+                'errors' => [
+                    'required' => 'tahun akhir diperlukan',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ],
+            'semester' => [
+                'rules' => 'required|max_length[2]',
+                'errors' => [
+                    'required' => 'semester diperlukan',
+                    'max_length' => 'terlalu panjang!'
+                ]
+            ]
+        ]);
+
+        if (!$rules) {
+            $data = [
+                'thn_awal' => $this->request->getPost('thn_awal'),
+                'thn_akhir' => $this->request->getPost('thn_akhir'),
+                'semester' => $this->request->getPost('semester')
+            ];
+            return view('data_akademik/add_data_ta', ['pageTitle' => 'Tambah Data Tahun Ajaran', 'data' => $data, 'validation' => $this->validator]);
+        } else {
+            // Set status ke "TIDAK" secara eksplisit sebelum menyimpan data
+            $data = [
+                'thn_awal' => $this->request->getPost('thn_awal'),
+                'thn_akhir' => $this->request->getPost('thn_akhir'),
+                'semester' => $this->request->getPost('semester'),
+                'status' => 'TIDAK'
+            ];
+            $thjrModel->insert($data);
+            return redirect()->to('admin/data_akademik')->with('success', 'Data berhasil disimpan.');
+        }
     }
+
+
+
 
     public function toggleStatus($id_thn)
     {
@@ -89,23 +130,46 @@ class Ta extends BaseController
 
     public function add_data_jurusan()
     {
-        $jurusanModel = new jurusanModel;
-        return view('data_akademik/add_data_jurusan');
+        // Load the validation library
+        $validation = \Config\Services::validation();
+
+        // Pass the validation object to the view
+        return view('data_akademik/add_data_jurusan', ['pageTitle' => 'Tambah Data Jurusan', 'validation' => $validation]);
     }
+
 
     public function save_data_jurusan()
     {
         $jurusanModel = new jurusanModel;
+
+        $rules = $this->validate([
+            'nama_jurusan' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'jurusan diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+        ]);
+
+        if (!$rules) {
+            $data = [
+                'pageTitle' => 'Tambah Data Jurusan',
+                'validation' => $this->validator
+            ];
+            return view('data_akademik/add_data_jurusan', $data);
+        }
+
         $jurusanModel->insert($this->request->getPost());
-        return redirect()->to('admin/jurusan')->with('success', 'Data berhasil simpan.');
+        return redirect()->to('admin/jurusan')->with('success', 'Data berhasil disimpan.');
     }
 
     public function edit_jurusan($id_jurusan)
     {
         $jurusanModel = new jurusanModel;
         $data = [
-            'pageTitle' => 'jurusan',
-            'jurusan' => $jurusanModel->where('id_jurusan', $id_jurusan)->first()
+            'pageTitle' => 'Edit Data Jurusan',
+            'jurusan' => $jurusanModel->find($id_jurusan) // Menggunakan find() untuk mendapatkan satu data berdasarkan ID
         ];
 
         return view('data_akademik/edit_data_jurusan', $data);
@@ -114,16 +178,37 @@ class Ta extends BaseController
     public function update_jurusan($id_jurusan)
     {
         $jurusanModel = new jurusanModel;
+
+        $rules = $this->validate([
+            'nama_jurusan' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'jurusan diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+        ]);
+
+        if (!$rules) {
+            $data = [
+                'jurusan' => $jurusanModel->find($id_jurusan), // Menggunakan find() untuk mendapatkan satu data berdasarkan ID
+
+                'pageTitle' => 'Edit Data Jurusan',
+                'validation' => $this->validator
+            ];
+            return view('data_akademik/edit_data_jurusan', $data);
+        }
+
         $data = $this->request->getPost();
         $jurusanModel->update($id_jurusan, $data);
-        return redirect()->to('admin/jurusan')->with('success', 'Data berhasil diupdate.');
+        return redirect()->to('admin/jurusan')->with('success', 'Data jurusan berhasil diperbarui.');
     }
 
     public function delete_jurusan($id_jurusan)
     {
         $jurusanModel = new jurusanModel();
         $jurusanModel->delete(['id_jurusan' => $id_jurusan]);
-        return redirect()->to('admin/jurusan')->with('success', 'Data berhasil dihapus.');
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data jurusan berhasil dihapus.');
     }
 
 
@@ -133,7 +218,7 @@ class Ta extends BaseController
         $prodi = $ta->joinJurusan()->paginate(10, 'prodi');
         $data = [
             'prodi' => $prodi,
-            'pageTitle' => "Prodi",
+            'pageTitle' => "Program Studi",
             'pager' => $ta->pager,
         ];
 
@@ -146,7 +231,7 @@ class Ta extends BaseController
         $jurusanModel = new jurusanModel();
 
         $data = [
-            'pageTitle' => 'prodi',
+            'pageTitle' => 'Tambah Data Prodi',
             'prodi' => $prodiModel->find('id_jurusan'),
             'jurusan' => $jurusanModel->findAll()
 
@@ -163,10 +248,54 @@ class Ta extends BaseController
         $postData = $this->request->getPost();
 
         // Validasi data jika diperlukan
+        $rules = $this->validate([
+            'kode_prodi' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'kode prodi diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'nama_prodi' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'nama prodi diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'program' => [
+                'rules' => 'required|max_length[3]',
+                'errors' => [
+                    'required' => 'program diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'id_jurusan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'jurusan harus dipilih'
+                ]
+            ],
+        ]);
 
+        if (!$rules) {
+            $prodiModel = new prodiModel;
+            $jurusanModel = new jurusanModel();
+
+            $data = [
+                'pageTitle' => 'Tambah Data Prodi',
+                'prodi' => $prodiModel->find('id_jurusan'),
+                'jurusan' => $jurusanModel->findAll(),
+                'validation' => $this->validator
+
+            ];
+            return view('data_akademik/add_data_prodi', $data);
+        }
         // Simpan data program studi
         $prodiModel = new prodiModel();
         $jurusanModel = new jurusanModel();
+
+
 
         // Pastikan id_jurusan yang dikirim valid
         if ($jurusanModel->find($postData['id_jurusan'])) {
@@ -211,7 +340,42 @@ class Ta extends BaseController
         $postData = $this->request->getPost();
 
         // Validasi data jika diperlukan
+        $rules = $this->validate([
+            'kode_prodi' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'kode prodi diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'nama_prodi' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'nama prodi diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'program' => [
+                'rules' => 'required|max_length[4]',
+                'errors' => [
+                    'required' => 'program diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+        ]);
 
+        if (!$rules) {
+            $prodiModel = new prodiModel;
+            $jurusanModel = new jurusanModel();
+
+            $data = [
+                'pageTitle' => 'Edit Data Prodi',
+                'prodi' => $prodi,
+                'jurusan' => $jurusanModel->findAll(),
+                'validation' => $this->validator
+            ];
+            return view('data_akademik/edit_data_prodi', $data);
+        }
         // Pastikan id_jurusan yang dikirim valid
         if (!$jurusanModel->find($postData['id_jurusan'])) {
             return redirect()->back()->withInput()->with('error', 'Jurusan tidak valid.');
@@ -236,7 +400,7 @@ class Ta extends BaseController
         // Hapus data prodi
         $prodiModel->delete($id);
 
-        return redirect()->to('/admin/prodi')->with('success', 'Data prodi berhasil dihapus.');
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data prodi berhasil dihapus.');
     }
 
 
@@ -256,12 +420,44 @@ class Ta extends BaseController
     public function add_data_unit()
     {
         $unitModel = new unitModel;
-        return view('data_akademik/add_data_unit');
+        return view('data_akademik/add_data_unit', ['pageTitle' => 'Tambah Data Unit']);
     }
 
     public function save_data_unit()
     {
         $unitModel = new unitModel;
+
+        $rules = $this->validate([
+            'kode_unit' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'kode unit diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'nama_unit' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'nama unit diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+        ]);
+
+        if (!$rules) {
+            $ta = new unitModel();
+            $unit = $ta->paginate(10, 'unit');
+
+            $data = [
+                'unit' => $unit,
+                'pageTitle' => "Tambah Data Unit",
+                'pager' => $ta->pager,
+                'validation' => $this->validator
+            ];
+            return view('data_akademik/add_data_unit', $data);
+        }
+
+
         $unitModel->insert($this->request->getPost());
         return redirect()->to('admin/unit')->with('success', 'Data berhasil disimpan.');
     }
@@ -270,7 +466,7 @@ class Ta extends BaseController
     {
         $unitModel = new unitModel;
         $data = [
-            'pageTitle' => 'Unit',
+            'pageTitle' => 'Edit Data Unit',
             'unit' => $unitModel->where('id_unit', $id_unit)->first()
         ];
 
@@ -280,15 +476,52 @@ class Ta extends BaseController
     public function update_unit($id_unit)
     {
         $unitModel = new unitModel;
+
+        $unit = $unitModel->find($id_unit);
+
+        if (!$unit) {
+            return redirect()->to('/admin/unit')->with('error', 'Data prodi tidak ditemukan.');
+        }
+
+        $rules = $this->validate([
+            'kode_unit' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'kode unit diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+            'nama_unit' => [
+                'rules' => 'required|max_length[40]',
+                'errors' => [
+                    'required' => 'nama unit diperlukan',
+                    'max_length' => 'terlalu panjang!',
+                ]
+            ],
+        ]);
+
+        if (!$rules) {
+
+            $data = [
+                'unit' => $unit,
+                'pageTitle' => "Edit Data Unit",
+                'validation' => $this->validator
+            ];
+            return view('data_akademik/edit_data_unit', $data);
+        }
+
+
+
         $data = $this->request->getPost();
+
         $unitModel->update($id_unit, $data);
-        return redirect()->to('admin/unit')->with('success', 'Data berhasil diupdate.');
+        return redirect()->to('admin/unit')->with('success', 'Data unit berhasil diperbarui.');
     }
 
     public function delete_unit($id_unit)
     {
         $unitModel = new unitModel();
         $unitModel->delete(['id_unit' => $id_unit]);
-        return redirect()->to('admin/unit')->with('success', 'Data berhasil delete.');
+        return redirect()->to($_SERVER['HTTP_REFERER'])->with('success', 'Data unit berhasil dihapus.');
     }
 }

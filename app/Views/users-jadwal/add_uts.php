@@ -9,9 +9,9 @@
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
                     <p>Lab UPA-TIK</p>
-                    <h2 class="text-white">Form Pengajuan Jadwal <br> UTS Tahun <br>
+                    <h2 class="text-white">Form Pengajuan Jadwal UTS<br> Tahun Ajaran
                         <?= $thn_awal; ?> -
-                        <?= $thn_akhir; ?>
+                        <?= $thn_akhir; ?> Semester <?= $semester; ?>
                     </h2>
                 </div>
             </div>
@@ -40,17 +40,34 @@
                         <input type="text" class="form-control" id="mk " name="mk">
                     </div>
                 </div>
+
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.mk') ?>
+                </div>
                 <div class="row mb-3">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Kelas</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="kelas" name="kelas">
                     </div>
                 </div>
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.kelas') ?>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Dosen</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="dosen" name="dosen">
+                    </div>
+                </div>
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.dosen') ?>
+                </div>
+
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Ruangan Lab</label>
                     <div class="col-sm-10">
-                        <select name="nama_ruangan" id="nama_ruangan" class="form-control"
-                            onchange="getJamByRuangan2()">
+                        <select name="nama_ruangan" id="nama_ruangan" class="form-control" onchange=" getJamByRuangan2()">
                             <option value="">Pilih Ruangan</option>
                             <?php foreach ($ruangan as $row): ?>
                                 <option value=" <?= $row['id_ruangan'] ?>">
@@ -60,10 +77,13 @@
                         </select>
                     </div>
                 </div>
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.nama_ruangan') ?>
+                </div>
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Hari</label>
                     <div class="col-sm-10">
-                        <select class="form-control" id="hari" name="hari" onchange="getJamByRuangan2()">
+                        <select class="form-control" id="hari" name="hari" onchange=" getJamByRuangan2()">
                             <option value="">Pilih Hari</option>
                             <?php foreach ($hari as $h): ?>
                                 <option value="<?= $h ?>">
@@ -73,12 +93,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Dosen</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="dosen" name="dosen">
-                    </div>
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.hari') ?>
                 </div>
+
+
                 <input type="hidden" class="form-control" id="prodi" name="prodi" value="<?= $idProdi; ?>">
                 <input type="hidden" class="form-control" id="tahun" name="tahun" value="<?= $tahun; ?>">
 

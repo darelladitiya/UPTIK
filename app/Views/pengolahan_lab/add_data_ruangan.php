@@ -8,7 +8,7 @@
             <?php $validation = \Config\Services::validation(); ?>
             <form action="/admin/save_data_ruangan" method="POST">
                 <?= csrf_field() ?>
-                <?php if (!empty(session()->getFlashdata('success'))): ?>
+                <?php if (!empty(session()->getFlashdata('success'))) : ?>
                     <div class="alert alert-success">
                         <?= session()->getFlashdata('succes'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty(session()->getFlashdata('fail'))): ?>
+                <?php if (!empty(session()->getFlashdata('fail'))) : ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('fail'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -31,7 +31,7 @@
                         <input type="text" class="form-control" id="nama_ruangan" name="nama_ruangan" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('nama_ruangan')): ?>
+                <?php if ($validation->getError('nama_ruangan')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nama_ruangan'); ?>
                     </div>
@@ -40,8 +40,8 @@
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Penanggung Jawab</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="id_teknisi" name="id_teknisi">
-                        <option value="">Pilih Penanggung Jawab</option>
-                            <?php foreach ($pegawai as $item): ?>
+                            <option value="">Pilih Penanggung Jawab</option>
+                            <?php foreach ($pegawai as $item) : ?>
                                 <option value="<?= $item['id'] ?>" ?>
                                     <?= $item['nama'] ?>
                                 </option>
@@ -49,7 +49,7 @@
                         </select>
                     </div>
                 </div>
-                <?php if ($validation->getError('id_teknisi')): ?>
+                <?php if ($validation->getError('id_teknisi')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('id_teknisi'); ?>
                     </div>
@@ -60,7 +60,7 @@
                         <input type="text" class="form-control" id="keterangan" name="keterangan">
                     </div>
                 </div>
-                <?php if ($validation->getError('keterangan')): ?>
+                <?php if ($validation->getError('keterangan')) : ?>
                     <div class="d-block text-danger" style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('keterangan'); ?>
                     </div>
@@ -71,7 +71,7 @@
                         <input type="text" class="form-control" id="lokasi" name="lokasi" value="">
                     </div>
                 </div>
-                <?php if ($validation->getError('lokasi')): ?>
+                <?php if ($validation->getError('lokasi')) : ?>
                     <div class="d-block text-danger" style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('lokasi'); ?>
                     </div>

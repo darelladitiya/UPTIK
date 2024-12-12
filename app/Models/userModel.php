@@ -25,5 +25,17 @@ class userModel extends Model
         return $this->join('program_studi', 'program_studi.id_prodi = user.id_prodi', 'left');
     }
 
+    public function getStatus()
+    {
+        // Array hari-hari dari jadwal
+        $status = ['aktif', 'tidak aktif'];
+
+        // Jika parameter filter tidak kosong, filter array berdasarkan hari yang dipilih
+    
+        
+
+        return $status;
+    }
+
 }
 

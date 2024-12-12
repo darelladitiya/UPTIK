@@ -9,10 +9,9 @@
 			<div class="col-lg-8 offset-lg-2 text-center">
 				<div class="breadcrumb-text">
 					<p>Lab UPA-TIK</p>
-					<h1>Jadwal Reguler Tahun <br>
-						<?= esc($thn_awal . '-' . $thn_akhir); ?>
-						<br>Semester
-						<?= $semester; ?>
+					<h1>Jadwal Reguler Tahun Ajaran<br>
+						<?= esc($thn_awal . '-' . $thn_akhir); ?> Semester <?= $semester; ?>
+						<br>
 					</h1>
 				</div>
 			</div>
@@ -34,29 +33,29 @@
 
 					</tr>
 					<tr>
-						<?php foreach ($jam as $j): ?>
+						<?php foreach ($jam as $j) : ?>
 							<th class="time-2">
 								<?= esc($j->jam); ?>
 							</th>
 						<?php endforeach; ?>
 					</tr>
+
 					<!-- hari -->
-					<?php foreach ($hari as $h): ?>
+					<?php foreach ($hari as $h) : ?>
 						<tr class="time">
-							<th class="time" style="text-align: center; vertical-align: middle;"
-								rowspan="<?= esc($jumlahLab); ?>">
+							<th class="time" style="text-align: center; vertical-align: middle;" rowspan="<?= esc($jumlahLab); ?>">
 								<?= esc($h); ?>
 							</th>
 							<?php $no = 1;
-							foreach ($ruangan as $r): ?>
-								<?php if ($no > 1): ?>
-								<tr>
-								<?php endif; ?>
-								<th class="time">
-									<?= esc($r->nama_ruangan); ?>
-								</th>
-								<?php foreach ($jam as $j): ?>
-									<?php
+							foreach ($ruangan as $r) : ?>
+								<?php if ($no > 1) : ?>
+						<tr>
+						<?php endif; ?>
+						<th class="time">
+							<?= esc($r->nama_ruangan); ?>
+						</th>
+						<?php foreach ($jam as $j) : ?>
+							<?php
 									$kelas = ''; // Inisialisasi kelas
 									foreach ($jadwal as $k) {
 										// Cek apakah jadwal sesuai dengan hari, ruangan, dan jam saat ini
@@ -66,24 +65,28 @@
 											break;
 										}
 									}
-									?>
-									<td style='color:black'>
-										<?= esc($kelas); ?>
-									</td>
-								<?php endforeach; ?>
-
-								<?php if ($no > 1): ?>
-								</tr>
-							<?php endif; ?>
-							<?php $no++; ?>
+							?>
+							<td style='color:black'>
+								<?= esc($kelas); ?>
+							</td>
 						<?php endforeach; ?>
+
+						<?php if ($no > 1) : ?>
 						</tr>
-					<?php endforeach; ?>
+					<?php endif; ?>
+					<?php $no++; ?>
+				<?php endforeach; ?>
+				</tr>
+			<?php endforeach; ?>
 				</thead>
 				<tbody>
 
 				</tbody>
 			</table>
+			<a href="<?= route_to('export.vjadwal.pdf', $jenis = "Reguler"); ?>" target="_blank" class="btn btn-warning mb-2">Export
+				PDF</a>
+			<a href="<?= route_to('export.jadwal-reguler.excel', $jenis = "REGULER"); ?>" target="_blank" class="btn btn-success mb-2">Export
+				Excel</a>
 		</div>
 	</div>
 </div>

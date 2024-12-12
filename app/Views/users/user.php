@@ -35,7 +35,7 @@
             // Hitung nilai $i
             $i = 1 + (10 * ($page - 1));
             ?>
-            <?php foreach ($user as $user): ?>
+            <?php foreach ($user as $user) : ?>
                 <tr class="text-center">
                     <td scope="row-1">
                         <?= $i++; ?>
@@ -62,9 +62,8 @@
                         <?= $user['nama_prodi']; ?> (<?= $user['program']; ?>)
                     </td>
                     <td>
+                        <a href="/admin/hapus_data_user/<?= $user['id_user']; ?>" onclick="return confirm('Apakah anda yakin ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         <a href="/admin/edit_data_user/<?= $user['id_user']; ?>" class="btn btn-success">Edit</a>
-                        <a href="/admin/hapus_data_user/<?= $user['id_user']; ?>"
-                            onclick="return confirm('apakah anda yakin');" class="btn btn-danger">Delete</a>
                     </td>
 
 
@@ -77,6 +76,7 @@
         <div class="col">
             <a href="/admin/add_data_user" class="btn btn-primary">Tambah Data User</a>
             <a href="/admin/user_export" class="btn btn-warning">Export PDF</a>
+            <a href="<?= route_to('export.excel.user') ?>" class="btn btn-success">Export Excel</a>
         </div>
     </div>
 
@@ -91,7 +91,6 @@
 
 <?= $this->section('scripts'); ?>
 <script>
-
     const swalElement = document.querySelector('.swal'); // Mengambil elemen dengan kelas '.swal'
     const swalData = swalElement.dataset.swal; // Mengambil data dari atribut data HTML 'data-swal'
 

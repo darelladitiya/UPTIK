@@ -8,7 +8,7 @@
             <?php $validation = \Config\Services::validation(); ?>
             <form action="/admin/update_data_barang/<?= $barang['id_aset']; ?>" method="POST">
                 <?= csrf_field() ?>
-                <?php if (!empty(session()->getFlashdata('success'))): ?>
+                <?php if (!empty(session()->getFlashdata('success'))) : ?>
                     <div class="alert alert-success">
                         <?= session()->getFlashdata('succes'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty(session()->getFlashdata('fail'))): ?>
+                <?php if (!empty(session()->getFlashdata('fail'))) : ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('fail'); ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -25,16 +25,14 @@
                         </button>
                     </div>
                 <?php endif; ?>
-                <input type="hidden" class="form-control" id="id_aset" name="id_aset" value="value="
-                    <?= $barang['id_aset']; ?>">
+                <input type="hidden" class="form-control" id="id_aset" name="id_aset" value="value=" <?= $barang['id_aset']; ?>">
                 <div class=" row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Nama Barang</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="deskripsi" name="deskripsi"
-                            value="<?= $barang['deskripsi']; ?>">
+                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" value="<?= $barang['deskripsi']; ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('deskripsi')): ?>
+                <?php if ($validation->getError('deskripsi')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('deskripsi'); ?>
                     </div>
@@ -42,11 +40,10 @@
                 <div class="row mb-3">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Serial Number</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="serialnumber" name="serialnumber"
-                            value="<?= $barang['serialnumber'] ?>">
+                        <input type="text" class="form-control" id="serialnumber" name="serialnumber" value="<?= $barang['serialnumber'] ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('serialnumber')): ?>
+                <?php if ($validation->getError('serialnumber')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('serialnumber'); ?>
                     </div>
@@ -54,11 +51,10 @@
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Supplier</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="supplier" name="supplier"
-                            value="<?= $barang['supplier'] ?>">
+                        <input type="text" class="form-control" id="supplier" name="supplier" value="<?= $barang['supplier'] ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('supplier')): ?>
+                <?php if ($validation->getError('supplier')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('supplier'); ?>
                     </div>
@@ -69,7 +65,7 @@
                         <input type="text" class="form-control" id="brand" name="brand" value="<?= $barang['brand'] ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('brand')): ?>
+                <?php if ($validation->getError('brand')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('brand'); ?>
                     </div>
@@ -80,7 +76,7 @@
                         <input type="text" class="form-control" id="model" name="model" value="<?= $barang['model'] ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('model')): ?>
+                <?php if ($validation->getError('model')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('model'); ?>
                     </div>
@@ -88,11 +84,10 @@
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Penanggung Jawab</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="penanggungjawab" name="penanggungjawab"
-                            value="<?= $barang['penanggungjawab'] ?>">
+                        <input type="text" class="form-control" id="penanggungjawab" name="penanggungjawab" value="<?= $barang['penanggungjawab'] ?>">
                     </div>
                 </div>
-                <?php if ($validation->getError('penanggungjawab')): ?>
+                <?php if ($validation->getError('penanggungjawab')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('penanggungjawab'); ?>
                     </div>
@@ -101,7 +96,7 @@
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Ruangan</label>
                     <div class="col-sm-10">
                         <select name="id_ruangan" id="id_ruangan" class="form-control">
-                            <?php foreach ($galeri as $row): ?>
+                            <?php foreach ($galeri as $row) : ?>
                                 <option value="<?= $row['id_ruangan'] ?>" <?= ($row['id_ruangan'] == $barang['id_ruangan']) ? 'selected' : '' ?>>
                                     <?= $row['nama_ruangan'] ?>
                                 </option>
@@ -110,7 +105,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin ingin mengedit data ini?');">Simpan Data</button>
             </form>
         </div>
     </div>

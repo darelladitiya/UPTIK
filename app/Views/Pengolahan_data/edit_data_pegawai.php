@@ -12,11 +12,10 @@
                     <input type="hidden" class="form-control" id="id" name="id" value=" <?= $pegawai['id']; ?>">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Nama</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="nama" name="nama" value=" <?= $pegawai['nama']; ?>"
-                            required>
+                        <input type="text" class="form-control" id="nama" name="nama" value=" <?= $pegawai['nama']; ?>" required>
                     </div>
                 </div>
-                <?php if ($validation->getError('nama')): ?>
+                <?php if ($validation->getError('nama')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nama'); ?>
                     </div>
@@ -24,17 +23,15 @@
                 <div class="row mb-3">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">NIP</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="nip" name="nip" value=" <?= $pegawai['nip']; ?>"
-                            required>
+                        <input type="text" class="form-control" id="nip" name="nip" value=" <?= $pegawai['nip']; ?>" required>
                     </div>
                 </div>
-                <?php if ($validation->getError('nip')): ?>
+                <?php if ($validation->getError('nip')) : ?>
                     <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                         <?= $validation->getError('nip'); ?>
                     </div>
                 <?php endif; ?>
-                <button type="submit" class="btn btn-primary"
-                    onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?');">Simpan Data</button>
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin ingin mengedit data ini?');">Simpan Data</button>
             </form>
         </div>
     </div>

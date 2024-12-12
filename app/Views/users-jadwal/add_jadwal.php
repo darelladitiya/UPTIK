@@ -9,9 +9,9 @@
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="breadcrumb-text">
                     <p>Lab UPA-TIK</p>
-                    <h2>Form Pengajuan Jadwal <br> Reguler Tahun <br>
+                    <h2 class="text-white">Form Pengajuan Jadwal Reguler<br>  Tahun Ajaran
                         <?= $thn_awal; ?> -
-                        <?= $thn_akhir; ?>
+                        <?= $thn_akhir; ?> Semester <?= $semester; ?>
                     </h2>
                 </div>
             </div>
@@ -53,6 +53,17 @@
                 <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                     <?= session('fail.kelas') ?>
                 </div>
+
+                <div class="row mb-3">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Dosen</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="dosen" name="dosen">
+                    </div>
+                </div>
+                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
+                    <?= session('fail.dosen') ?>
+                </div>
+                
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Ruangan Lab</label>
                     <div class="col-sm-10">
@@ -86,15 +97,7 @@
                 <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
                     <?= session('fail.hari') ?>
                 </div>
-                <div class="row mb-3">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Nama Dosen</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="dosen" name="dosen">
-                    </div>
-                </div>
-                <div class="d-block text-danger " style="margin-top:-10px;margin-bottom:15px;margin-left:180px;">
-                    <?= session('fail.dosen') ?>
-                </div>
+               
 
                 <input type="hidden" class="form-control" id="prodi" name="prodi" value="<?= $idProdi; ?>">
                 <input type="hidden" class="form-control" id="tahun" name="tahun" value="<?= $tahun; ?>">

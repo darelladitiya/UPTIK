@@ -30,8 +30,9 @@ button {
   font-size: var(--normal-font-size);
 }
 
-a {
+a{
   text-decoration: none;
+  color: black;
 }
 
 img {
@@ -60,8 +61,8 @@ img {
   position: relative;
   margin-inline: 1.5rem;
   background-color: hsla(0, 0%, 100%, .01);
-  border: 2px solid hsla(0, 0%, 100%, .7);
-  padding: 2.5rem 1rem;
+  border: 3px solid hsl(0, 0%, 0%);
+  padding: 3.5rem 1rem;
   color: var(--white-color);
   border-radius: 1rem;
   backdrop-filter: blur(16px);
@@ -71,6 +72,7 @@ img {
   text-align: center;
   font-size: var(--h1-font-size);
   margin-bottom: 1.25rem;
+  color: black;
 }
 
 .login__inputs, 
@@ -87,10 +89,12 @@ img {
   grid-template-columns: 1fr max-content;
   column-gap: .75rem;
   align-items: center;
-  border: 2px solid hsla(0, 0%, 100%, .7);
+  border: 2px solid hsl(0, 0%, 0%);
   padding-inline: 1.25rem;
   border-radius: 4rem;
+  color: black;
 }
+
 
 .login__input, 
 .login__button {
@@ -101,12 +105,12 @@ img {
 .login__input {
   width: 100%;
   background: none;
-  color: var(--white-color);
+  color: var(--black-color);
   padding-block: 1rem;
 }
 
 .login__input::placeholder {
-  color: var(--white-color);
+  color: var(--black-color);
 }
 
 .login__box i {
@@ -125,16 +129,17 @@ img {
   font-size: var(--small-font-size);
 }
 
+
 .login__check-box {
   column-gap: .5rem;
 }
+
 
 .login__check-input {
   width: 1rem;
   height: 1rem;
   accent-color: var(--white-color);
 }
-
 .login__forgot {
   color: var(--white-color);
 }
@@ -147,11 +152,24 @@ img {
   width: 100%;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: var(--white-color);
+  background-color: var(--black-color);
   border-radius: 4rem;
-  color: var(--black-color);
+  color: var(--white-color);
   font-weight: 500;
   cursor: pointer;
+}
+
+.login__button:hover{
+  border-radius: 4rem;
+  color: black;
+  background-color: white;
+  transform: scale(1.04);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .login__register {
@@ -175,7 +193,7 @@ img {
     justify-content: center;
   }
   .login__form {
-    width: 420px;
+    width: 500px;
     padding-inline: 2.5rem;
   }
   .login__title {

@@ -2,10 +2,12 @@
 
 <?= $this->section('content'); ?>
 <!-- hero area -->
+<div class="swal" data-swal="<?= session('success'); ?>"></div>
+
 <div class="hero-area hero-bg">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 offset-lg-2 text-center">
+            <div class="text-center">
                 <div class="hero-text">
                     <div class="hero-text-tablecell">
                         <p class="subtitle">UPA-TIK</p>
@@ -29,10 +31,26 @@
     <div class="containerk">
         <div class="headingk">Kontak Kami</div>
         <form action="<?= base_url('user/save_data_kritik') ?>" method="POST" class="form">
+        <?php $validation = \Config\Services::validation(); ?>
             
             <input required="" class="input" type="text" name="nama" id="nama" placeholder="Nama Lengkap">
+            <?php if ($validation->getError('nama')): ?>
+                    <div class="d-block text-danger " style="margin-top:5px;margin-left:5px;">
+                        <?= $validation->getError('nama'); ?>
+                    </div>
+                <?php endif; ?>
             <input required="" class="input" type="text" name="email" id="email" placeholder="Email">
+            <?php if ($validation->getError('email')): ?>
+                    <div class="d-block text-danger " style="margin-top:5px;margin-left:5px;">
+                        <?= $validation->getError('email'); ?>
+                    </div>
+                <?php endif; ?>
             <input required="" class="input3" type="text" name="komentar" id="komentar" placeholder="Komentar">
+            <?php if ($validation->getError('komentar')): ?>
+                    <div class="d-block text-danger " style="margin-top:5px;margin-left:5px;">
+                        <?= $validation->getError('komentar'); ?>
+                    </div>
+                <?php endif; ?>
 
             <input class="login-button" type="submit">
 
